@@ -1,5 +1,6 @@
 using T3.Core.Utils;
 using T3.Core.Utils.Geometry;
+// ReSharper disable InconsistentNaming
 
 namespace Lib.render.@_;
 
@@ -22,17 +23,29 @@ internal sealed class TransformMatrix : Instance<TransformMatrix>
     private void Update(EvaluationContext context)
     {
         var s = Scale.GetValue(context) * UniformScale.GetValue(context);
-        var r = Rotation.GetValue(context);
+        var r = Rotation_PitchYawRoll.GetValue(context);
         float yaw = r.Y.ToRadians();
         float pitch =r.X.ToRadians();
         float roll = r.Z.ToRadians();
+
+        var vec4 = Rotation_Quaternion.GetValue(context);
+        var rotationMode = RotationMode.GetEnumValue<RotationModes>(context);
+        
+        var rotation = rotationMode switch
+                           {
+                               RotationModes.PitchYawRoll => Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll),
+                               RotationModes.Quaternion   => new Quaternion(vec4.X,vec4.Y,vec4.Z,vec4.W),
+                               _                          => throw new ArgumentOutOfRangeException()
+                           };
+        
+        
         var pivot = Pivot.GetValue(context);
         var t = Translation.GetValue(context);
         var objectToParentObject = GraphicsMath.CreateTransformationMatrix(scalingCenter: pivot, 
                                                                            scalingRotation: Quaternion.Identity, 
                                                                            scaling: new Vector3(s.X, s.Y, s.Z), 
                                                                            rotationCenter: pivot,
-                                                                           rotation: Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll), 
+                                                                           rotation: rotation, 
                                                                            translation: new Vector3(t.X, t.Y, t.Z));
 
         var shearing = Shear.GetValue(context);
@@ -71,15 +84,27 @@ internal sealed class TransformMatrix : Instance<TransformMatrix>
 
     private Vector4[] _matrix = new Vector4[4];
     private Vector4[] _invertedMatrix = new Vector4[4];
-        
-        
+
+    private enum RotationModes
+    {
+        PitchYawRoll,
+        Quaternion,
+    }    
         
     [Input(Guid = "3B817E6C-F532-4A8C-A2FF-A00DC926EEB2")]
     public readonly InputSlot<Vector3> Translation = new();
-        
+
+    [Input(Guid = "96841452-D384-49A5-977E-F16B57DE9118", MappedType = typeof(RotationModes))]
+    public readonly InputSlot<int> RotationMode = new();
+    
     [Input(Guid = "5339862D-5A18-4D0C-B908-9277F5997563")]
-    public readonly InputSlot<Vector3> Rotation = new();
-        
+    public readonly InputSlot<Vector3> Rotation_PitchYawRoll = new();
+
+    [Input(Guid = "E15B0CAB-696F-44FD-B270-99F6FD26634F")]
+    public readonly InputSlot<Vector4> Rotation_Quaternion = new();
+
+
+    
     [Input(Guid = "58B9DFB6-0596-4F0D-BAF6-7FB3AE426C94")]
     public readonly InputSlot<Vector3> Scale = new();
 
