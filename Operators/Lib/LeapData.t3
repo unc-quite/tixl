@@ -1,0 +1,47 @@
+{
+  "Id": "e0006880-d593-499a-82df-6b68ce7f859e"/*LeapData*/,
+  "Inputs": [
+    {
+      "Id": "3b08ac0e-a563-49e0-909c-61a8926113b2"/*WorkspaceCenter*/,
+      "DefaultValue": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Id": "61d968aa-e7da-4c89-a34b-4604fc171db6"/*ParameterFriction*/,
+      "DefaultValue": 0.04
+    },
+    {
+      "Id": "7dc4ec0f-a301-4a5b-8e3f-b63422d4958f"/*Enable*/,
+      "DefaultValue": true
+    },
+    {
+      "Id": "d6571c23-ef6b-4fae-b5d5-f2f02457933b"/*ParameterCenter*/,
+      "DefaultValue": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "Id": "ea1d6739-5917-4158-938d-d67eb8dc53fe"/*CameraFriction*/,
+      "DefaultValue": 0.06
+    },
+    {
+      "Id": "f49c1a33-cba9-4e11-a5cb-892954e83e65"/*ParameterRange*/,
+      "DefaultValue": {
+        "X": 1.0,
+        "Y": 1.0,
+        "Z": 1.0
+      }
+    },
+    {
+      "Id": "f9d5a645-af93-4c41-9ec8-52c6913011c6"/*WorkspaceRadius*/,
+      "DefaultValue": 1.0
+    }
+  ],
+  "Children": [],
+  "Connections": []
+}

@@ -1,0 +1,86 @@
+{
+  "Id": "e0006880-d593-499a-82df-6b68ce7f859e"/*LeapData*/,
+  "Description": "Input for LeapMotion Devices",
+  "InputUis": [
+    {
+      "InputId": "3b08ac0e-a563-49e0-909c-61a8926113b2"/*WorkspaceCenter*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 75.0
+      }
+    },
+    {
+      "InputId": "61d968aa-e7da-4c89-a34b-4604fc171db6"/*ParameterFriction*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 450.0
+      }
+    },
+    {
+      "InputId": "7dc4ec0f-a301-4a5b-8e3f-b63422d4958f"/*Enable*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "InputId": "d6571c23-ef6b-4fae-b5d5-f2f02457933b"/*ParameterCenter*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 225.0
+      }
+    },
+    {
+      "InputId": "ea1d6739-5917-4158-938d-d67eb8dc53fe"/*CameraFriction*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 375.0
+      }
+    },
+    {
+      "InputId": "f49c1a33-cba9-4e11-a5cb-892954e83e65"/*ParameterRange*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 300.0
+      }
+    },
+    {
+      "InputId": "f9d5a645-af93-4c41-9ec8-52c6913011c6"/*WorkspaceRadius*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 150.0
+      }
+    }
+  ],
+  "SymbolChildUis": [],
+  "OutputUis": [
+    {
+      "OutputId": "f66202a7-1215-4021-886d-671645e93650"/*Position*/,
+      "Position": {
+        "X": 300.0,
+        "Y": 200.0
+      }
+    },
+    {
+      "OutputId": "8dfefc2a-c80a-4d81-9c8c-8d24efaca240"/*RotationAngles*/,
+      "Position": {
+        "X": 300.0,
+        "Y": 300.0
+      }
+    },
+    {
+      "OutputId": "e5176a0a-547d-45a0-bf1f-49a87351465e"/*Parameter*/,
+      "Position": {
+        "X": 300.0,
+        "Y": 400.0
+      }
+    },
+    {
+      "OutputId": "958a76d2-5e8d-47d2-8d24-b79d881305af"/*Quality*/,
+      "Position": {
+        "X": 300.0,
+        "Y": 500.0
+      }
+    }
+  ]
+}

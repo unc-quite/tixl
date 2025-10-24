@@ -134,6 +134,11 @@
   <ItemGroup>
     <Folder Include="io\video\" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="LeapCSharp.NET4.0">
+      <HintPath>..\..\Dependencies\LeapCSharp.NET4.0.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Target Name="CreatePackageInfo" AfterTargets="AfterBuild">
     <ItemGroup Label="Define json structure of referenced operator packages">
       <OpPacks Include="@(Operators)">
