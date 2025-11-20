@@ -5,129 +5,24 @@
   "InputUis": [],
   "SymbolChildUis": [
     {
-      "ChildId": "1ab494a7-acef-4fb9-9141-bc0eeb510966"/*LinearGradient*/,
+      "ChildId": "32966f34-ef59-45ba-b1db-7443e68f1144"/*Time*/,
       "Position": {
-        "X": 1306.7616,
-        "Y": 2958.1453
+        "X": 1151.7075,
+        "Y": 2172.7463
       }
     },
     {
-      "ChildId": "1d247660-0b24-49d1-81f3-68c2bb676d45"/*RoundedRect*/,
+      "ChildId": "66fd6534-b49a-4f18-99ad-1e293e46b6a9"/*Time*/,
       "Position": {
-        "X": 79.64935,
-        "Y": 2719.713
-      }
-    },
-    {
-      "ChildId": "1e1704c5-baf2-4166-b4d6-676ad38306c6"/*HasBooleanChanged*/,
-      "Position": {
-        "X": 2496.941,
-        "Y": 2404.7632
-      }
-    },
-    {
-      "ChildId": "2026274f-da79-4f7c-a7e7-e53502b58c22"/*Time*/,
-      "Position": {
-        "X": 72.29047,
-        "Y": 3319.7441
-      }
-    },
-    {
-      "ChildId": "222b7c15-eed9-44ab-81c8-59262053682d"/*Steps*/,
-      "Position": {
-        "X": 219.64935,
-        "Y": 2719.713
-      }
-    },
-    {
-      "ChildId": "331cfca6-2494-4ab0-9366-d87b1107bb11"/*Trigger*/,
-      "Position": {
-        "X": 2299.7412,
-        "Y": 2517.358
-      }
-    },
-    {
-      "ChildId": "358db422-e83f-482e-b16b-5c1588307fd8"/*Any*/,
-      "Position": {
-        "X": 2496.941,
-        "Y": 2299.7632
-      }
-    },
-    {
-      "ChildId": "3c39193c-8fe7-45c5-be9b-a999c6501e79"/*Steps*/,
-      "Position": {
-        "X": 1488.1888,
-        "Y": 2365.6091
-      }
-    },
-    {
-      "ChildId": "4c275ca3-a311-4e00-b1e0-346231b85f5a"/*RoundedRect*/,
-      "Position": {
-        "X": 1273.8177,
-        "Y": 2339.058
-      }
-    },
-    {
-      "ChildId": "5367a3ab-3d42-4f95-b51f-05eef2490b30"/*Time*/,
-      "Position": {
-        "X": 79.64935,
-        "Y": 2754.713
+        "X": 1113.1729,
+        "Y": 1935.2491
       }
     },
     {
       "ChildId": "75f735c0-5354-49b6-860b-518557023656"/*RoundedRect*/,
       "Position": {
-        "X": 252.422,
-        "Y": 2183.9941
-      }
-    },
-    {
-      "ChildId": "867aaba5-e981-45a7-8b64-4bec9243362f"/*Time*/,
-      "Position": {
-        "X": 1267.8062,
-        "Y": 2865.0637
-      }
-    },
-    {
-      "ChildId": "8df8ba7c-3a8a-4589-ba23-c6e37c772bf7"/*ImageResult*/,
-      "Position": {
-        "X": 1715.1897,
-        "Y": 2946.6836
-      }
-    },
-    {
-      "ChildId": "ac67f6e3-82e1-4e28-a3d9-edd0626214c1"/*LinearGradient*/,
-      "Position": {
-        "X": 212.29047,
-        "Y": 3284.7441
-      }
-    },
-    {
-      "ChildId": "ace47d3d-e9c9-4fd5-bef1-827a00f6966c"/*Time*/,
-      "Position": {
-        "X": 1255.7515,
-        "Y": 2522.5417
-      }
-    },
-    {
-      "ChildId": "b43e9285-19b3-49ff-9c68-0922e35a5517"/*ImageResult*/,
-      "Position": {
-        "X": 1702.3596,
-        "Y": 2379.862
-      }
-    },
-    {
-      "ChildId": "c4558fe8-c8d8-434f-a3a1-53ecdc8dbf59"/*CountInt*/,
-      "Position": {
-        "X": 2496.941,
-        "Y": 2509.7632
-      }
-    },
-    {
-      "ChildId": "c7a0e47f-9a77-4e14-9198-c9590b213963"/*Any*/,
-      "Position": {
-        "X": 2496.941,
-        "Y": 2439.7632
+        "X": 1291.7075,
+        "Y": 2137.7463
       }
     },
     {
@@ -143,78 +38,47 @@
         "X": 1291.7075,
         "Y": 1938.3384
       }
-    },
-    {
-      "ChildId": "f331b92b-868d-4dc1-8a25-a676baa43576"/*PickTexture*/,
-      "Position": {
-        "X": 2710.1404,
-        "Y": 2311.644
-      }
     }
   ],
   "OutputUis": [
     {
       "OutputId": "23bc598c-e87d-4993-9e09-b4676e302e61"/*ColorBuffer*/,
       "Position": {
-        "X": 2868.6904,
-        "Y": 2213.4194
+        "X": 1686.2451,
+        "Y": 2099.0356
       }
     }
   ],
-  "Annotations": [
+  "TourPoints": [
     {
-      "Id": "75c4b6fd-2b48-41a6-9ff6-4fafd954b6fa",
-      "Label": "Level 1",
-      "Color": {
-        "X": 0.6,
-        "Y": 0.6,
-        "Z": 0.6,
-        "W": 1.0
-      },
-      "Position": {
-        "X": 1195.7515,
-        "Y": 1841.0079
-      },
-      "Size": {
-        "X": 676.60815,
-        "Y": 363.99207
-      }
+      "Id": "f9dee287-741b-4ab3-8284-430e9f1a80c2",
+      "ChildId": "de17e3f3-f79c-4648-9689-27d7187dc711",
+      "Title": "When you selected an operator, the Parameter Window will show its ... well... parameters."
     },
     {
-      "Id": "aa23e269-eb8d-4bba-b43f-ba08e177515c",
-      "Label": "Level 3",
-      "Color": {
-        "X": 0.6,
-        "Y": 0.6,
-        "Z": 0.6,
-        "W": 1.0
-      },
-      "Position": {
-        "X": 1208.5815,
-        "Y": 2826.6836
-      },
-      "Size": {
-        "X": 676.60815,
-        "Y": 407.6797
-      }
+      "Id": "fde63fef-b90a-442c-9d55-fe2a6e031ddd",
+      "ChildId": "de17e3f3-f79c-4648-9689-27d7187dc711",
+      "Title": "Notice how the Scale parameter is lit up.\nThat's because we changed it from its default value. \nTry clicking the parameter name \"Scale\" to reset it to its default..."
     },
     {
-      "Id": "b67aff2a-f37d-4be6-9f55-7cf08eb6cac7",
-      "Label": "Level 2",
-      "Color": {
-        "X": 0.6,
-        "Y": 0.6,
-        "Z": 0.6,
-        "W": 1.0
-      },
-      "Position": {
-        "X": 1195.7515,
-        "Y": 2259.862
-      },
-      "Size": {
-        "X": 676.60815,
-        "Y": 407.6797
-      }
+      "Id": "a8d5aa9b-41e7-4b1c-81e8-ba7d409c9d25",
+      "ChildId": "de17e3f3-f79c-4648-9689-27d7187dc711",
+      "Title": "But sometimes we want things to be more dynamic. It looks like the \"Rotate\" parameter needs to be controlled..."
+    },
+    {
+      "Id": "478f0bdb-45da-49b2-8ca9-b61b11b95223",
+      "ChildId": "66fd6534-b49a-4f18-99ad-1e293e46b6a9",
+      "Title": "The [Time] operator would be perfect for this!\nBut when you try moving it close to the [RoundedRect] it doesn't snap! \nThat's because [Time] returns a numeric value but the [RoundedRect] expects an Image as default input."
+    },
+    {
+      "Id": "31809f42-97f7-4c1a-94f1-e68c079630bb",
+      "ChildId": "66fd6534-b49a-4f18-99ad-1e293e46b6a9",
+      "Title": "Try dragging the [Time]'s output connector...\nDo you notice how a small circle starts blinking on the [RoundedRect]? That's an indicator that it has \"hidden\" parameters (like the Rotate) that would accept a numeric input... "
+    },
+    {
+      "Id": "ae0d4672-9ad7-416b-bbba-d3a860208789",
+      "ChildId": "de17e3f3-f79c-4648-9689-27d7187dc711",
+      "Title": "Drop the end of the connection onto the [RoundedRect] and pick Rotate from the popup.\nIf you want to tidy things up, you can now snap to the connected input."
     }
   ]
 }

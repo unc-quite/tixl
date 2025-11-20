@@ -11,8 +11,7 @@ internal static class SkillQuestPanel
 {
     internal static void Draw(GraphWindow window)
     {
-        if (!SkillManager.TryGetActiveTopic(out var activeTopic)
-            || !SkillManager.TryGetActiveLevel(out var activeLevel))
+        if (!SkillManager.TryGetActiveTopicAndLevel(out var activeTopic, out var activeLevel))
         {
             ImGui.TextUnformatted("non skill quest data");
             return;
@@ -46,8 +45,15 @@ internal static class SkillQuestPanel
                     ImGui.SameLine(0, 10);
                     if (ImGui.Button("Start"))
                     {
-                        SkillManager.StartPlayMode(window, activeLevel);
+                        SkillManager.StartPlayModeFromHub(window);
                     }
+                    
+                    ImGui.SameLine(0,10);
+                    if (ImGui.Button("Reset progress"))
+                    {
+                        SkillManager.ResetProgress();
+                    }
+
                 }
                 ImGui.EndChild();
             }

@@ -24,29 +24,7 @@ internal static class SkillQuestStates
         = new(
               Enter: context =>
                      {
-                         Debug.Assert(context.OpenedProject != null);
-                         
-                         if (ProjectView.Focused == null)
-                         {
-                             context.StateMachine.SetState(Inactive,context);
-                             return;
-                         }
 
-                         // Keep and apply a new UI state
-                         context.PreviousUiState = UiState.KeepUiState();
-                         LayoutHandling.LoadAndApplyLayoutOrFocusMode(LayoutHandling.Layouts.SkillQuest);
-
-                         if (!OutputWindow.TryGetPrimaryOutputWindow(out var outputWindow))
-                         {
-                             UiState.ApplyUiState(context.PreviousUiState);
-                             context.StateMachine.SetState(Inactive,context);
-                         }
-                         
-                         UiState.HideAllUiElements();
-                         
-                         // Pin output
-                         var rootInstance = context.OpenedProject.Structure.GetRootInstance();
-                         outputWindow.Pinning.PinInstance(rootInstance);
                      },
               
               Update: context => { },

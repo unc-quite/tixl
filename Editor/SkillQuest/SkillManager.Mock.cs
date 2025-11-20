@@ -1,6 +1,4 @@
 ﻿#nullable enable
-using ImGuiNET;
-using T3.Editor.Gui.Styling;
 using T3.Editor.SkillQuest.Data;
 using T3.Editor.UiModel;
 

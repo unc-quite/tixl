@@ -16,7 +16,7 @@ public sealed class QuestTopic
     public Requirements Requirement = Requirements.None;
     
     [JsonIgnore]
-    public List<SkillProgress.LevelResult>  ResultsForTopic=[];
+    public List<SkillProgression.LevelResult>  ResultsForTopic=[];
 
     public enum Requirements
     {

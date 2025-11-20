@@ -64,7 +64,7 @@ internal static class TourInteraction
             // Draw tip
             ImGui.SameLine(0, 4);
             
-            ImGui.PushTextWrapPos(ImGui.GetCursorPosX() + 300 * T3Ui.UiScaleFactor);
+            ImGui.PushTextWrapPos(ImGui.GetCursorPosX() + 350 * T3Ui.UiScaleFactor);
             TextParagraphs(point.Title);
             ImGui.PopTextWrapPos();
 

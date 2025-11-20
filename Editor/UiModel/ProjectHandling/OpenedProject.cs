@@ -53,11 +53,11 @@ internal sealed class OpenedProject
         failureLog = null;
         project.OverrideHomeGuid = implicitHomeOpId;
         
-        if (OpenedProjects.TryGetValue(project, out openedProject))
-        {
-            failureLog = null;
-            return true;
-        }
+        // if (OpenedProjects.TryGetValue(project, out openedProject))
+        // {
+        //     failureLog = null;
+        //     return true;
+        // }
 
         openedProject
             = new OpenedProject(project,
@@ -72,7 +72,7 @@ internal sealed class OpenedProject
                                 }
                                );
 
-        OpenedProjects[openedProject.Package] = openedProject;
+        //OpenedProjects[openedProject.Package] = openedProject;
         return true;
     }
 
