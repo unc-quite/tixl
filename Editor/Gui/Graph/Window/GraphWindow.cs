@@ -46,18 +46,17 @@ internal sealed class GraphWindow : Windows.Window
         WindowFlags &= ~(ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoMove |
                          ImGuiWindowFlags.NoResize);
     }
-    
+
     protected override void AddAnotherInstance()
     {
         // ReSharper disable once ObjectCreationAsStatement
         new GraphWindow();
     }
-    
     #endregion
 
     #region Handling project view ----------------------
     public ProjectView? ProjectView { get; private set; }
-    
+
     /// <summary>
     /// Initialize <see cref="ProjectView"/> to for a loaded project 
     /// </summary>
@@ -106,10 +105,10 @@ internal sealed class GraphWindow : Windows.Window
     /** Called when view is closed (e.g. when jumping to hub) or changed */
     public void CloseView()
     {
-
         if (ProjectView != null)
             ProjectView.OnCompositionChanged -= CompositionChangedHandler;
 
+        _reinitHubView = true;
         ProjectView = null;
     }
 
@@ -124,8 +123,8 @@ internal sealed class GraphWindow : Windows.Window
         ProjectView.Close();
         GraphWindowInstances.Remove(this);
     }
-    
 
+    private bool _reinitHubView = true;
     private bool _focusOnNextFrame;
 
     // private void FocusRequested()
@@ -145,7 +144,8 @@ internal sealed class GraphWindow : Windows.Window
     {
         if (ProjectView == null)
         {
-            ProjectHub.Draw(this);
+            ProjectHub.Draw(this, _reinitHubView);
+            _reinitHubView = false;
             return;
         }
 
@@ -155,15 +155,13 @@ internal sealed class GraphWindow : Windows.Window
         if (ProjectView.InstView == null)
             return;
 
-
-        
         var windowContentHeight = (int)ImGui.GetWindowHeight();
 
         if (UserSettings.Config.ShowTimeline)
         {
             ProjectView.TimeLineCanvas.FoldingHeight.DrawSplit(out windowContentHeight);
         }
-        
+
         //ImageBackgroundFading.HandleImageBackgroundFading(ProjectView.GraphImageBackground, out var backgroundImageOpacity);
         var backgroundImageOpacity = 1f;
         ImGui.BeginChild("##graphbackground", new Vector2(0, windowContentHeight), false,
@@ -175,8 +173,6 @@ internal sealed class GraphWindow : Windows.Window
                          | ImGuiWindowFlags.NoBackground
                          | ImGuiWindowFlags.ChildWindow);
         {
-
-            
         }
         ImGui.EndChild();
         ImGui.SetCursorPos(Vector2.Zero);
@@ -192,22 +188,21 @@ internal sealed class GraphWindow : Windows.Window
         {
             // ImageBackground
             ProjectView.GraphImageBackground.Draw(backgroundImageOpacity);
-            
+
             var graphHiddenWhileInteractiveWithBackground = ProjectView.GraphImageBackground.IsActive && TransformGizmoHandling.IsDragging;
             if (!graphHiddenWhileInteractiveWithBackground)
             {
                 var drawList = ImGui.GetWindowDrawList();
                 DrawGraphContent(drawList);
             }
-            
         }
         ImGui.EndChild();
 
         if (ProjectView == null)
             return;
 
-        ProjectView.CheckDisposal(); 
-        
+        ProjectView.CheckDisposal();
+
         if (UserSettings.Config.ShowTimeline)
         {
             const int splitterWidth = 3;
@@ -226,7 +221,7 @@ internal sealed class GraphWindow : Windows.Window
                                  | ImGuiWindowFlags.NoBackground
                                 );
                 {
-                    if(ProjectView.CompositionInstance != null)
+                    if (ProjectView.CompositionInstance != null)
                         ProjectView.TimeLineCanvas.Draw(ProjectView.CompositionInstance, Playback.Current);
                 }
                 ImGui.EndChild();
@@ -257,7 +252,7 @@ internal sealed class GraphWindow : Windows.Window
                 GraphTitleAndBreadCrumbs.Draw(ProjectView);
 
             TourInteraction.Draw(ProjectView);
-            
+
             // Breadcrumbs may have requested close...
             if (ProjectView == null)
                 return;
@@ -280,8 +275,8 @@ internal sealed class GraphWindow : Windows.Window
 
                 ImGui.BeginGroup();
                 ImGui.SetScrollY(0);
-                
-                if(!UserSettings.Config.FocusMode)
+
+                if (!UserSettings.Config.FocusMode)
                     CustomComponents.DrawWindowFocusFrame();
 
                 if (ImGui.IsWindowFocused())
@@ -293,7 +288,7 @@ internal sealed class GraphWindow : Windows.Window
 
                 ImGui.EndGroup();
 
-                if(ProjectView != null)
+                if (ProjectView != null)
                     ParameterPopUp.DrawParameterPopUp(ProjectView);
             }
         }
@@ -302,7 +297,6 @@ internal sealed class GraphWindow : Windows.Window
         // if (ProjectView?.InstView != null)
         //     _editDescriptionDialog.Draw(ProjectView.InstView.Symbol);
         //
-
     }
     #endregion
 

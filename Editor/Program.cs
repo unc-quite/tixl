@@ -19,6 +19,7 @@ using T3.Editor.Gui.Interaction.StartupCheck;
 using T3.Editor.Gui.Styling;
 using T3.Editor.Gui.UiHelpers;
 using T3.Editor.Gui.Windows;
+using T3.Editor.Skills.Training;
 using T3.Editor.SystemUi;
 using T3.Editor.UiContentDrawing;
 using T3.Editor.UiModel.Helpers;
@@ -197,7 +198,7 @@ internal static class Program
             
         // Setup file watching the operator source
         T3Ui.InitializeEnvironment();
-        SkillQuest.SkillManager.Initialize();
+        SkillTraining.Initialize();
             
         Log.RemoveWriter(splashScreen);
             

@@ -5,10 +5,10 @@ namespace T3.Editor.Gui.Hub;
 
 internal static class ProjectHub
 {
-    public static void Draw(GraphWindow window)
+    public static void Draw(GraphWindow window, bool reinitView)
     {
         ProjectsPanel.Draw(window);
         ImGui.Separator();
-        SkillQuestPanel.Draw(window);
+        SkillQuestPanel.Draw(window, reinitView);
     }
 }

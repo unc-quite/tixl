@@ -6,23 +6,17 @@ using T3.Editor.Gui;
 using T3.Editor.Gui.Input;
 using T3.Editor.Gui.Styling;
 using T3.Editor.Gui.UiHelpers;
+using T3.Editor.Skills.Data;
 using T3.Editor.UiModel.Selection;
 
-namespace T3.Editor.SkillQuest.Data;
+namespace T3.Editor.Skills.Ui;
 
 internal static class SkillMapEditor
 {
-    private static bool _isOpen;
-
     internal static void ShowNextFrame()
     {
         _isOpen = true;
     }
-
-    private static QuestZone? _activeZone;
-
-    //private static QuestTopic? _activeTopic;
-    private static readonly HashSet<QuestTopic> _selectedTopics = new();
 
     internal static void Draw()
     {
@@ -35,7 +29,7 @@ internal static class SkillMapEditor
         {
             ImGui.BeginChild("LevelList", new Vector2(120 * T3Ui.UiScaleFactor, 0));
             {
-                foreach (var zone in SkillMap.Data.Zones)
+                foreach (var zone in SkillMapData.Data.Zones)
                 {
                     ImGui.PushID(zone.Id.GetHashCode());
                     if (ImGui.Selectable($"{zone.Title}", zone == _activeZone))
@@ -75,7 +69,7 @@ internal static class SkillMapEditor
 
                 if (ImGui.Button("Save"))
                 {
-                    SkillMap.Save();
+                    SkillMapData.Save();
                 }
 
                 DrawInteractiveMap();
@@ -98,8 +92,7 @@ internal static class SkillMapEditor
 
     private static void DrawInteractiveMap()
     {
-        SkillMapCanvas.Canvas.UpdateCanvas(out _);
-        var isAnyItemHovered = SkillMapCanvas.DrawContent(HandleTopicInteraction2, out HexCanvas.Cell mouseCell, _selectedTopics);
+        var isAnyItemHovered = _canvas.DrawContent(HandleTopicInteraction2, out var mouseCell, _selectedTopics);
 
         if (_state == States.DraggingItems)
         {
@@ -201,9 +194,9 @@ internal static class SkillMapEditor
         }
 
         // Add items
-        foreach (var topic in SkillMap.AllTopics)
+        foreach (var topic in SkillMapData.AllTopics)
         {
-            var centerOnScreen = SkillMapCanvas.Canvas.ScreenPosFromCell(topic.Cell);
+            var centerOnScreen = _canvas.ScreenPosFromCell(topic.Cell);
             if (!bounds.Contains(centerOnScreen))
                 continue;
 
@@ -277,10 +270,10 @@ internal static class SkillMapEditor
 
     private static void DrawHoveredEmptyCell(ImDrawListPtr dl, HexCanvas.Cell cell)
     {
-        var hoverCenter = SkillMapCanvas.Canvas.ScreenPosFromCell(cell);
+        var hoverCenter = _canvas.ScreenPosFromCell(cell);
         _dampedHoverCanvasPos = MathUtils.Lerp(_dampedHoverCanvasPos, hoverCenter, 0.5f);
 
-        dl.AddNgonRotated(_dampedHoverCanvasPos, SkillMapCanvas.Canvas.HexRadiusOnScreen, UiColors.ForegroundFull.Fade(0.1f), false);
+        dl.AddNgonRotated(_dampedHoverCanvasPos, _canvas.HexRadiusOnScreen, UiColors.ForegroundFull.Fade(0.1f), false);
 
         var activeTopic = _selectedTopics.Count == 0 ? null : _selectedTopics.First();
 
@@ -290,7 +283,7 @@ internal static class SkillMapEditor
                                {
                                    Id = Guid.NewGuid(),
                                    MapCoordinate = new Vector2(cell.X, cell.Y),
-                                   Title = "New topic" + SkillMap.AllTopics.Count(),
+                                   Title = "New topic" + SkillMapData.AllTopics.Count(),
                                    ZoneId = activeTopic?.ZoneId ?? Guid.Empty,
                                    TopicType = _lastType,
                                    Status = activeTopic?.Status ?? QuestTopic.Statuses.Locked,
@@ -342,12 +335,12 @@ internal static class SkillMapEditor
                     }
 
                     _state = States.DraggingItems;
-                    SkillMapCanvas.Canvas.InverseTransformPositionFloat(ImGui.GetMousePos());
+                    _canvas.InverseTransformPositionFloat(ImGui.GetMousePos());
                     _draggedTopic = topic;
 
                     // Initialize blocked cells to avoid collisions
                     _blockedCellIds.Clear();
-                    foreach (var t in SkillMap.AllTopics)
+                    foreach (var t in SkillMapData.AllTopics)
                     {
                         if (_selectedTopics.Contains(t))
                             continue;
@@ -391,15 +384,20 @@ internal static class SkillMapEditor
             return _activeZone;
 
         if (_selectedTopics.Count == 0)
-            return SkillMap.FallbackZone;
+            return SkillMapData.FallbackZone;
 
-        return SkillMap.TryGetZone(_selectedTopics.First().Id, out var zone)
+        return SkillMapData.TryGetZone(_selectedTopics.First().Id, out var zone)
                    ? zone
-                   : SkillMap.FallbackZone;
+                   : SkillMapData.FallbackZone;
     }
+
+    private static bool _isOpen;
+    private static QuestZone? _activeZone;
+    private static readonly HashSet<QuestTopic> _selectedTopics = new();
 
     private static bool _focusTopicNameInput;
     private static QuestTopic.TopicTypes _lastType = QuestTopic.TopicTypes.Numbers;
     private static States _state;
     private static readonly SelectionFence _fence = new();
+    private static readonly SkillMapCanvas _canvas = new();
 }

@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using T3.Editor.Gui.Interaction;
 
-namespace T3.Editor.SkillQuest.Data;
+namespace T3.Editor.Skills.Ui;
 
 public class HexCanvas : ScalableCanvas
 {
@@ -85,7 +85,7 @@ public class HexCanvas : ScalableCanvas
 
     internal Vector2 ScreenPosFromCell(Cell cell)
     {
-        var canvasPos = CellToCanvasPos(cell);
+        var canvasPos = CanvasPosFromCell(cell);
         return TransformPositionFloat(canvasPos);
     }
 
@@ -94,11 +94,11 @@ public class HexCanvas : ScalableCanvas
     /// </summary>
     internal Vector2 MapCoordsToScreenPos(Vector2 mapCoords)
     {
-        var canvasPos = CellToCanvasPos(new Cell((int)mapCoords.X, (int)mapCoords.Y));
+        var canvasPos = CanvasPosFromCell(new Cell((int)mapCoords.X, (int)mapCoords.Y));
         return TransformPositionFloat(canvasPos);
     }
 
-    private Vector2 CellToCanvasPos(Cell cell)
+    internal Vector2 CanvasPosFromCell(Cell cell)
     {
         const float sqrt3 = 1.7320508075688772f;
 

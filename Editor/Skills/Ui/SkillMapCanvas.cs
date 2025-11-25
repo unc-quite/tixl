@@ -3,21 +3,25 @@ using ImGuiNET;
 using T3.Core.DataTypes;
 using T3.Core.Utils;
 using T3.Editor.Gui.Styling;
+using T3.Editor.Gui.UiHelpers;
+using T3.Editor.Skills.Data;
 using T3.Editor.UiModel.InputsAndTypes;
 
-namespace T3.Editor.SkillQuest.Data;
+namespace T3.Editor.Skills.Ui;
 
-internal static class SkillMapCanvas
+internal sealed class SkillMapCanvas :HexCanvas
 {
-    public static bool DrawContent(HandleTopicInteraction topicAction, out HexCanvas.Cell mouseCell, HashSet<QuestTopic> selection)
+    public bool DrawContent(HandleTopicInteraction? topicAction, out HexCanvas.Cell mouseCell, HashSet<QuestTopic> selection)
     {
+        UpdateCanvas(out _);
+        
         var dl = ImGui.GetWindowDrawList();
 
         var mousePos = ImGui.GetMousePos();
-        mouseCell = Canvas.CellFromScreenPos(mousePos);
+        mouseCell = CellFromScreenPos(mousePos);
 
         var isAnyItemHovered = false;
-        foreach (var topic in SkillMap.AllTopics)
+        foreach (var topic in SkillMapData.AllTopics)
         {
             isAnyItemHovered |= DrawTopicCell(dl, topic, mouseCell, selection, topicAction);
         }
@@ -28,15 +32,15 @@ internal static class SkillMapCanvas
     /// <returns>
     /// return true if hovered
     /// </returns>
-    private static bool DrawTopicCell(ImDrawListPtr dl, QuestTopic topic, HexCanvas.Cell cellUnderMouse, HashSet<QuestTopic> selection,
-                                      HandleTopicInteraction topicAction)
+    private bool DrawTopicCell(ImDrawListPtr dl, QuestTopic topic, HexCanvas.Cell cellUnderMouse, HashSet<QuestTopic> selection,
+                                      HandleTopicInteraction? topicAction)
     {
         var cell = new HexCanvas.Cell(topic.MapCoordinate);
 
         var isHovered = ImGui.IsWindowHovered() && !ImGui.IsMouseDown(ImGuiMouseButton.Right) && cell == cellUnderMouse;
 
-        var posOnScreen = Canvas.MapCoordsToScreenPos(topic.MapCoordinate);
-        var radius = Canvas.HexRadiusOnScreen;
+        var posOnScreen = MapCoordsToScreenPos(topic.MapCoordinate);
+        var radius = HexRadiusOnScreen;
 
         var type = topic.TopicType switch
                        {
@@ -60,21 +64,21 @@ internal static class SkillMapCanvas
 
         foreach (var unlockTargetId in topic.UnlocksTopics)
         {
-            if (!SkillMap.TryGetTopic(unlockTargetId, out var targetTopic))
+            if (!SkillMapData.TryGetTopic(unlockTargetId, out var targetTopic))
                 continue;
 
-            var targetPos = Canvas.MapCoordsToScreenPos(targetTopic.MapCoordinate);
+            var targetPos = MapCoordsToScreenPos(targetTopic.MapCoordinate);
             var delta = posOnScreen - targetPos;
             var direction = Vector2.Normalize(delta);
             var angle = -MathF.Atan2(delta.X, delta.Y) - MathF.PI / 2;
-            var fadeLine = (delta.Length() / Canvas.Scale.X).RemapAndClamp(0f, 1000f, 1, 0.06f);
+            var fadeLine = (delta.Length() / Scale.X).RemapAndClamp(0f, 1000f, 1, 0.06f);
 
             dl.AddLine(posOnScreen - direction * radius * 0.83f,
                        targetPos + direction * radius * 0.83f,
                        typeColor.Fade(fadeLine),
                        2);
             dl.AddNgonRotated(targetPos + direction * radius * 0.83f,
-                              10 * Canvas.Scale.X,
+                              10 * Scale.X,
                               typeColor.Fade(fadeLine),
                               true,
                               3,
@@ -83,16 +87,16 @@ internal static class SkillMapCanvas
 
         if (!string.IsNullOrEmpty(topic.Title))
         {
-            var labelAlpha = Canvas.Scale.X.RemapAndClamp(0.3f, 0.8f, 0, 1);
+            var labelAlpha = Scale.X.RemapAndClamp(0.3f, 0.8f, 0, 1);
             if (labelAlpha > 0.01f)
             {
-                ImGui.PushFont(Canvas.Scale.X < 0.6f ? Fonts.FontSmall : Fonts.FontNormal);
-                CustomDraw.AddWrappedCenteredText(dl, topic.Title, posOnScreen, 13, UiColors.ForegroundFull.Fade(labelAlpha));
+                ImGui.PushFont(Scale.X < 0.6f ? Fonts.FontSmall : Fonts.FontNormal);
+                CustomImguiDraw.AddWrappedCenteredText(dl, topic.Title, posOnScreen, 13, UiColors.ForegroundFull.Fade(labelAlpha));
                 ImGui.PopFont();
 
                 if (topic.Status == QuestTopic.Statuses.Locked)
                 {
-                    Icons.DrawIconAtScreenPosition(Icon.Locked, (posOnScreen + new Vector2(-Icons.FontSize / 2, 25f * Canvas.Scale.Y)).Floor(),
+                    Icons.DrawIconAtScreenPosition(Icon.Locked, (posOnScreen + new Vector2(-Icons.FontSize / 2, 25f * Scale.Y)).Floor(),
                                                    dl,
                                                    UiColors.ForegroundFull.Fade(0.4f * labelAlpha));
                 }
@@ -113,12 +117,9 @@ internal static class SkillMapCanvas
 
         ImGui.EndTooltip();
 
-        topicAction(topic, isSelected);
-
+        topicAction?.Invoke(topic, isSelected);
         return isHovered;
     }
 
     internal delegate void HandleTopicInteraction(QuestTopic topic, bool isSelected);
-
-    public static readonly HexCanvas Canvas = new();
 }

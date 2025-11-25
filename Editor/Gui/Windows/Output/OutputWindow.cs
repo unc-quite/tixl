@@ -11,8 +11,9 @@ using T3.Editor.Gui.Styling;
 using T3.Editor.Gui.UiHelpers;
 using T3.Editor.Gui.Windows.Layouts;
 using T3.Editor.Gui.Windows.RenderExport;
-using T3.Editor.SkillQuest;
+using T3.Editor.Skills;
 using T3.Editor.UiModel;
+using SkillTraining = T3.Editor.Skills.Training.SkillTraining;
 using Texture2D = T3.Core.DataTypes.Texture2D;
 using Vector2 = System.Numerics.Vector2;
 
@@ -130,7 +131,7 @@ internal sealed class OutputWindow : Window
                 _camSelectionHandling.Update(drawnInstance, drawnType);
                 var editingFlags = _camSelectionHandling.PreventCameraInteraction 
                                    | _camSelectionHandling.PreventImageCanvasInteraction
-                                   | SkillManager.IsInPlayMode
+                                   | SkillTraining.IsInPlayMode
                                    | drawnType != typeof(Texture2D)
                                        ? T3Ui.EditingFlags.PreventMouseInteractions
                                        : T3Ui.EditingFlags.None;
@@ -161,7 +162,7 @@ internal sealed class OutputWindow : Window
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, Vector4.Zero);
                 ImGui.PushStyleColor(ImGuiCol.ScrollbarBg, new Vector4(0.3f, 0.3f, 0.3f, 0.1f));
 
-                if (!SkillManager.IsInPlayMode)
+                if (!SkillTraining.IsInPlayMode)
                 {
                     DrawToolbar(drawnType);
                     DrawRenderProgressBar();

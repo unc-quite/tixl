@@ -1,14 +1,11 @@
-﻿using System.Diagnostics;
-using T3.Editor.Gui.UiHelpers;
+﻿using T3.Editor.Gui.UiHelpers;
 using T3.Editor.Gui.Windows.Layouts;
-using T3.Editor.Gui.Windows.Output;
-using T3.Editor.UiModel.ProjectHandling;
 
-namespace T3.Editor.SkillQuest;
+namespace T3.Editor.Skills.Training;
 
-internal static class SkillQuestStates
+internal static class SkillTrainingStates
 {
-    internal static State<SkillQuestContext> Inactive
+    internal static State<SkillTrainingContext> Inactive
         = new(
               Enter: context =>
                      {
@@ -20,7 +17,7 @@ internal static class SkillQuestStates
               _ => { }
              );
 
-    internal static State<SkillQuestContext> Playing
+    internal static State<SkillTrainingContext> Playing
         = new(
               Enter: context =>
                      {
@@ -31,7 +28,7 @@ internal static class SkillQuestStates
               Exit: _ => { }
              );
 
-    internal static State<SkillQuestContext> Completed
+    internal static State<SkillTrainingContext> Completed
         = new(
               Enter: _ => { },
               Update: context => { },

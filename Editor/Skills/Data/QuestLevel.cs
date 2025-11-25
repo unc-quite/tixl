@@ -1,4 +1,4 @@
-﻿namespace T3.Editor.SkillQuest.Data;
+﻿namespace T3.Editor.Skills.Data;
 
 public sealed class QuestLevel
 {

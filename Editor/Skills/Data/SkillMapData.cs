@@ -4,9 +4,12 @@ using System.IO;
 using T3.Core.UserData;
 using T3.Serialization;
 
-namespace T3.Editor.SkillQuest.Data;
+namespace T3.Editor.Skills.Data;
 
-internal sealed class SkillMap
+/// <summary>
+/// Defines how Zones, Topics and Levels are connected and layed out on a map
+/// </summary>
+internal sealed class SkillMapData
 {
     public readonly List<QuestZone> Zones = [];
 
@@ -44,7 +47,7 @@ internal sealed class SkillMap
         questTopic = null;
         return false;
     }
-    
+
     public static bool TryGetTopic(Guid id, [NotNullWhen(true)] out QuestTopic? questTopic)
     {
         foreach (var t in AllTopics)
@@ -59,7 +62,6 @@ internal sealed class SkillMap
         questTopic = null;
         return false;
     }
-    
 
     public static bool TryGetZone(Guid id, [NotNullWhen(true)] out QuestZone? zone)
     {
@@ -81,19 +83,19 @@ internal sealed class SkillMap
     {
         if (!File.Exists(SkillMapPath))
         {
-            Data = new SkillMap(); // Fallback
+            Data = new SkillMapData(); // Fallback
         }
 
         try
         {
-            Data = JsonUtils.TryLoadingJson<SkillMap>(SkillMapPath)!;
+            Data = JsonUtils.TryLoadingJson<SkillMapData>(SkillMapPath)!;
             if (Data == null)
                 throw new Exception("Failed to load SkillProgress");
         }
         catch (Exception e)
         {
             Log.Error($"Failed to load {SkillMapPath} : {e.Message}");
-            Data = new SkillMap();
+            Data = new SkillMapData();
         }
 
         foreach (var z in Data.Zones)
@@ -117,7 +119,7 @@ internal sealed class SkillMap
     private static string SkillMapPath => Path.Combine(FileLocations.ReadOnlySettingsPath, "SkillMap.json");
 
     [Newtonsoft.Json.JsonIgnore]
-    internal static SkillMap Data = new();
+    internal static SkillMapData Data = new();
     #endregion
 }
 

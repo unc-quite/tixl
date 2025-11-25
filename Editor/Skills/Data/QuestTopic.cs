@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
+using T3.Editor.Skills.Data;
+using T3.Editor.Skills.Ui;
 using T3.Serialization;
 
-namespace T3.Editor.SkillQuest.Data;
+namespace T3.Editor.Skills.Data;
 
 [SuppressMessage("ReSharper", "MemberCanBeInternal")]
 public sealed class QuestTopic
@@ -35,7 +37,7 @@ public sealed class QuestTopic
     public Requirements Requirement = Requirements.None;
 
     [JsonIgnore]
-    public List<SkillProgression.LevelResult> ResultsForTopic = [];
+    public List<SkillProgress.LevelResult> ResultsForTopic = [];
     
     public enum Requirements
     {

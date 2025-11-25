@@ -3,24 +3,39 @@
 using ImGuiNET;
 using T3.Editor.Gui.Window;
 using T3.Editor.Gui.Styling;
-using T3.Editor.SkillQuest;
+using T3.Editor.Gui.UiHelpers;
+using T3.Editor.Skills;
+using T3.Editor.Skills.Data;
+using T3.Editor.Skills.Ui;
+using SkillTraining = T3.Editor.Skills.Training.SkillTraining;
 
 namespace T3.Editor.Gui.Hub;
 
 internal static class SkillQuestPanel
 {
-    internal static void Draw(GraphWindow window)
+    internal static void Draw(GraphWindow window, bool projectViewJustClosed)
     {
-        if (!SkillManager.TryGetActiveTopicAndLevel(out var activeTopic, out var activeLevel))
+        if (!SkillTraining.TryGetActiveTopicAndLevel(out var activeTopic, out var activeLevel))
         {
             ImGui.TextUnformatted("non skill quest data");
             return;
         }
 
+        if (projectViewJustClosed)
+        {
+            _selectedTopic.Clear();
+            //var activeTopic = SkillMapData.AllTopics.First();
+            _selectedTopic.Add(activeTopic);
+            var area = ImRect.RectWithSize(_mapCanvas.CanvasPosFromCell(activeTopic.Cell), Vector2.One);
+            area.Expand(200);
+            _mapCanvas.FitAreaOnCanvas(area);
+        }
+
         ContentPanel.Begin("Skill Quest", "some sub title", DrawIcons, Height);
         {
-            ImGui.BeginChild("Map", new Vector2(100, 0));
-            ImGui.Text("Dragons\nbe here");
+            ImGui.BeginChild("Map", new Vector2(400, 0), false, ImGuiWindowFlags.NoBackground);
+            //ImGui.Text("Dragons\nbe here");
+            _mapCanvas.DrawContent(null, out _, _selectedTopic);
             ImGui.EndChild();
 
             ImGui.SameLine(0, 10);
@@ -45,15 +60,14 @@ internal static class SkillQuestPanel
                     ImGui.SameLine(0, 10);
                     if (ImGui.Button("Start"))
                     {
-                        SkillManager.StartPlayModeFromHub(window);
-                    }
-                    
-                    ImGui.SameLine(0,10);
-                    if (ImGui.Button("Reset progress"))
-                    {
-                        SkillManager.ResetProgress();
+                        SkillTraining.StartPlayModeFromHub(window);
                     }
 
+                    ImGui.SameLine(0, 10);
+                    if (ImGui.Button("Reset progress"))
+                    {
+                        SkillTraining.ResetProgress();
+                    }
                 }
                 ImGui.EndChild();
             }
@@ -71,5 +85,8 @@ internal static class SkillQuestPanel
         Icon.AddFolder.DrawAtCursor();
     }
 
-    internal static float Height => 120 * T3Ui.UiScaleFactor;
+    internal static float Height => 220 * T3Ui.UiScaleFactor;
+
+    private static readonly HashSet<QuestTopic> _selectedTopic = [];
+    private static readonly SkillMapCanvas _mapCanvas = new();
 }

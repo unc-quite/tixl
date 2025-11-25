@@ -5,15 +5,16 @@ using T3.Editor.Gui;
 using T3.Editor.Gui.Input;
 using T3.Editor.Gui.Styling;
 using T3.Editor.Gui.UiHelpers;
-using T3.Editor.SkillQuest.Data;
+using T3.Editor.Skills.Training;
+using T3.Editor.Skills.Data;
 using Color = T3.Core.DataTypes.Vector.Color;
 using Vector2 = System.Numerics.Vector2;
 using Vector4 = System.Numerics.Vector4;
 
-namespace T3.Editor.SkillQuest;
+namespace T3.Editor.Skills;
 
 /// <summary>
-/// A dialog that is shown after level completed
+/// A dialog that is shown after level completed.
 /// </summary>
 internal static class SkillProgressionPopup
 {
@@ -27,7 +28,7 @@ internal static class SkillProgressionPopup
         ImGui.SetNextWindowSize(popUpSize, ImGuiCond.Always);
         ImGui.SetNextWindowPos(pos);
 
-        if (!SkillManager.TryGetActiveTopicAndLevel(out var topic, out var previousLevel))
+        if (!SkillTraining.TryGetActiveTopicAndLevel(out var topic, out var previousLevel))
             return;
 
         ImGui.PushStyleColor(ImGuiCol.PopupBg, UiColors.BackgroundFull.Rgba);
@@ -133,8 +134,8 @@ internal static class SkillProgressionPopup
         ImGui.PushStyleColor(ImGuiCol.Button, Color.Transparent.Rgba);
         if (ImGui.Button("Back to Hub", Vector2.Zero))
         {
-            SkillManager.SaveResult(SkillProgression.LevelResult.States.Skipped);
-            SkillManager.ExitPlayMode();
+            SkillTraining.SaveResult(SkillProgress.LevelResult.States.Skipped);
+            SkillTraining.ExitPlayMode();
         }
 
         var right = ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X;
@@ -144,8 +145,8 @@ internal static class SkillProgressionPopup
         if (ImGui.Button("Skip", new Vector2(wSkip, btnH)))
         {
             //SkillManager.CompleteAndProgressToNextLevel(SkillProgression.LevelResult.States.Skipped);
-            SkillManager.SaveResult(SkillProgression.LevelResult.States.Skipped);
-            SkillManager.UpdateActiveTopicAndLevel();
+            SkillTraining.SaveResult(SkillProgress.LevelResult.States.Skipped);
+            SkillTraining.UpdateActiveTopicAndLevel();
         }
 
         ImGui.PopStyleColor();
@@ -155,7 +156,7 @@ internal static class SkillProgressionPopup
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.25f, 0.55f, 1.00f, 1f));
         if (ImGui.Button("Continue", new Vector2(wCont, btnH)))
         {
-            SkillManager.CompleteAndProgressToNextLevel(SkillProgression.LevelResult.States.Completed);
+            SkillTraining.CompleteAndProgressToNextLevel(SkillProgress.LevelResult.States.Completed);
         }
 
         ImGui.PopStyleColor(2);

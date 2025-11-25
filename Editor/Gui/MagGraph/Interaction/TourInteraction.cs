@@ -2,9 +2,10 @@
 using T3.Core.DataTypes.Vector;
 using T3.Editor.Gui.Input;
 using T3.Editor.Gui.Styling;
-using T3.Editor.SkillQuest;
+using T3.Editor.Skills;
 using T3.Editor.UiModel;
 using T3.Editor.UiModel.ProjectHandling;
+using SkillTraining = T3.Editor.Skills.Training.SkillTraining;
 
 namespace T3.Editor.Gui.MagGraph.Interaction;
 
@@ -27,7 +28,7 @@ internal static class TourInteraction
         if (compositionUi.TourPoints.Count == 0)
             return;
 
-        SkillManager.DrawLevelHeader();
+        SkillTraining.DrawLevelHeader();
 
         FormInputs.AddVerticalSpace(10);
         

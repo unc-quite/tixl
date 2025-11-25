@@ -6,24 +6,27 @@ using T3.Editor.Gui;
 using T3.Editor.Gui.Input;
 using T3.Editor.Gui.MagGraph.Interaction;
 using T3.Editor.Gui.Styling;
-using T3.Editor.Gui.Window;
 using T3.Editor.Gui.UiHelpers;
+using T3.Editor.Gui.Window;
 using T3.Editor.Gui.Windows.Layouts;
 using T3.Editor.Gui.Windows.Output;
-using T3.Editor.SkillQuest.Data;
+using T3.Editor.Skills.Data;
 using T3.Editor.UiModel;
 using T3.Editor.UiModel.ProjectHandling;
 using T3.Editor.UiModel.Selection;
 
-namespace T3.Editor.SkillQuest;
+namespace T3.Editor.Skills.Training;
 
-internal static partial class SkillManager
+/// <summary>
+/// Handles playing skill map topics and levels
+/// </summary>
+internal static partial class SkillTraining
 {
     internal static void Initialize()
     {
-        SkillProgression.LoadUserData();
+        SkillProgress.LoadUserData();
         
-        SkillMap.Load();
+        SkillMapData.Load();
         InitializeSkillMapFromLevelSymbols();
         UpdateActiveTopicAndLevel();
     }
@@ -66,7 +69,7 @@ internal static partial class SkillManager
         {
             Log.Debug("Can't access primary output window");
             UiState.ApplyUiState(_context.PreviousUiState);
-            _context.StateMachine.SetState(SkillQuestStates.Inactive, _context);
+            _context.StateMachine.SetState(SkillTrainingStates.Inactive, _context);
             return;
         }
 
@@ -78,7 +81,7 @@ internal static partial class SkillManager
         {
             Log.Debug("Failed to load root");
             UiState.ApplyUiState(_context.PreviousUiState);
-            _context.StateMachine.SetState(SkillQuestStates.Inactive, _context);
+            _context.StateMachine.SetState(SkillTrainingStates.Inactive, _context);
             return;
         }
 
@@ -87,18 +90,18 @@ internal static partial class SkillManager
 
         FitViewToSelectionHandling.FitViewToSelection();
 
-        _context.StateMachine.SetState(SkillQuestStates.Playing, _context);
+        _context.StateMachine.SetState(SkillTrainingStates.Playing, _context);
     }
 
     internal static void Update()
     {
         var playmodeEnded = _context.ProjectView?.GraphView is { Destroyed: true };
-        if (_context.StateMachine.CurrentState != SkillQuestStates.Inactive && playmodeEnded)
+        if (_context.StateMachine.CurrentState != SkillTrainingStates.Inactive && playmodeEnded)
         {
-            _context.StateMachine.SetState(SkillQuestStates.Inactive, _context);
+            _context.StateMachine.SetState(SkillTrainingStates.Inactive, _context);
         }
 
-        if (_context.StateMachine.CurrentState == SkillQuestStates.Completed)
+        if (_context.StateMachine.CurrentState == SkillTrainingStates.Completed)
         {
             SkillProgressionPopup.Draw();
         }
@@ -111,7 +114,7 @@ internal static partial class SkillManager
     /// </summary>
     public static void PostUpdate()
     {
-        if (_context.StateMachine.CurrentState != SkillQuestStates.Playing)
+        if (_context.StateMachine.CurrentState != SkillTrainingStates.Playing)
             return;
 
         if (!OutputWindow.TryGetPrimaryOutputWindow(out var outputWindow))
@@ -131,13 +134,13 @@ internal static partial class SkillManager
 
         if (_context.StateMachine.StateTime > 1 && progress >= 1.0f)
         {
-            _context.StateMachine.SetState(SkillQuestStates.Completed, _context);
+            _context.StateMachine.SetState(SkillTrainingStates.Completed, _context);
             SkillProgressionPopup.Show();
             //CompleteAndExitLevel();
         }
     }
 
-    internal static void CompleteAndProgressToNextLevel(SkillProgression.LevelResult.States status)
+    internal static void CompleteAndProgressToNextLevel(SkillProgress.LevelResult.States status)
     {
         SaveResult(status);
         ExitPlayMode();
@@ -147,12 +150,12 @@ internal static partial class SkillManager
     
     
 
-    internal static void SaveResult(SkillProgression.LevelResult.States resultState)
+    internal static void SaveResult(SkillProgress.LevelResult.States resultState)
     {
         if (_context.ActiveTopic == null || _context.ActiveLevel == null)
             return;
 
-        SkillProgression.SaveLevelResult(_context.ActiveLevel, new SkillProgression.LevelResult
+        SkillProgress.SaveLevelResult(_context.ActiveLevel, new SkillProgress.LevelResult
                                                                    {
                                                                        TopicId = _context.ActiveTopic.Id,
                                                                        LevelSymbolId = _context.ActiveLevel.SymbolId,
@@ -174,17 +177,17 @@ internal static partial class SkillManager
     /// </summary>
     internal static bool UpdateActiveTopicAndLevel()
     {
-        if (SkillMap.Data.Zones.Count == 0)
+        if (SkillMapData.Data.Zones.Count == 0)
             return false;
 
-        if (!SkillProgression.TryGetLastResult(out var lastResult)
+        if (!SkillProgress.TryGetLastResult(out var lastResult)
             || !TryGetTopicAndLevelForResult(lastResult,
                                              out var lastCompletedZone,
                                              out var lastCompletedTopic, 
                                              out var lastCompletedLevel))
         {
             // Start with the first topic and first zone
-            _context.ActiveTopic = SkillMap.AllTopics.FirstOrDefault();
+            _context.ActiveTopic = SkillMapData.AllTopics.FirstOrDefault();
             if (_context.ActiveTopic == null || _context.ActiveTopic.Levels.Count == 0)
             {
                 return false;
@@ -226,7 +229,7 @@ internal static partial class SkillManager
         return true;
     }
 
-    private static bool TryGetTopicAndLevelForResult(SkillProgression.LevelResult result,
+    private static bool TryGetTopicAndLevelForResult(SkillProgress.LevelResult result,
                                                      [NotNullWhen(true)] out QuestZone? zone,
                                                      [NotNullWhen(true)] out QuestTopic? topic,
                                                      [NotNullWhen(true)] out QuestLevel? level)
@@ -235,7 +238,7 @@ internal static partial class SkillManager
         topic = null;
         level = null;
 
-        foreach (var z in SkillMap.Data.Zones)
+        foreach (var z in SkillMapData.Data.Zones)
         {
             foreach (var t in z.Topics)
             {
@@ -287,16 +290,16 @@ internal static partial class SkillManager
 
         _context.ProjectView?.Close();
         _context.OpenedProject.Package.Reload(homeSymbolId);
-        _context.StateMachine.SetState(SkillQuestStates.Inactive, _context);
+        _context.StateMachine.SetState(SkillTrainingStates.Inactive, _context);
     }
 
-    public static bool IsInPlayMode => (_context.StateMachine.CurrentState == SkillQuestStates.Playing ||
-                                       _context.StateMachine.CurrentState == SkillQuestStates.Completed);
+    public static bool IsInPlayMode => (_context.StateMachine.CurrentState == SkillTrainingStates.Playing ||
+                                       _context.StateMachine.CurrentState == SkillTrainingStates.Completed);
 
     public static void DrawLevelHeader()
     {
-        var test1 = _context.StateMachine.CurrentState == SkillQuestStates.Playing;
-        var test2 = _context.StateMachine.CurrentState == SkillQuestStates.Completed;
+        var test1 = _context.StateMachine.CurrentState == SkillTrainingStates.Playing;
+        var test2 = _context.StateMachine.CurrentState == SkillTrainingStates.Completed;
         
         if (!test1 && !test2)
             return;
@@ -351,21 +354,21 @@ internal static partial class SkillManager
         return true;
     }
 
-    private static bool IsInPlaymode => _context.StateMachine.CurrentState == SkillQuestStates.Playing;
+    private static bool IsInPlaymode => _context.StateMachine.CurrentState == SkillTrainingStates.Playing;
     private const string PlayModeProgressVariableId = "_PlayModeProgress";
 
-    private static readonly SkillQuestContext _context = new()
+    private static readonly SkillTrainingContext _context = new()
                                                              {
                                                                  StateMachine = new
-                                                                     StateMachine<SkillQuestContext>(typeof(SkillQuestStates),
-                                                                                                     SkillQuestStates.Inactive
+                                                                     StateMachine<SkillTrainingContext>(typeof(SkillTrainingStates),
+                                                                                                     SkillTrainingStates.Inactive
                                                                                                     ),
                                                              };
 
     public static void ResetProgress()
     {
-        SkillProgression.Data.Results.Clear();
-        SkillProgression.SaveUserData();
+        SkillProgress.Data.Results.Clear();
+        SkillProgress.SaveUserData();
         UpdateActiveTopicAndLevel();
     }
 }

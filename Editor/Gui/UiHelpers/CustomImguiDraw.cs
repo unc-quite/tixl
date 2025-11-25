@@ -3,9 +3,9 @@ using ImGuiNET;
 using T3.Core.DataTypes.Vector;
 using T3.Core.Utils;
 
-namespace T3.Editor.SkillQuest.Data;
+namespace T3.Editor.Gui.UiHelpers;
 
-internal static class CustomDraw
+internal static class CustomImguiDraw
 {
     private static readonly int[] _wrapLineIndices = new int[10];
 

@@ -3,13 +3,14 @@ using System.IO;
 using Newtonsoft.Json;
 using T3.Core.UserData;
 using T3.Serialization;
+// ReSharper disable MemberCanBeInternal
 
-namespace T3.Editor.SkillQuest.Data;
+namespace T3.Editor.Skills.Data;
 
 /// <summary>
-/// The state of the active user progress for serialization to settings.
+/// The active user's progress for serialization to settings.
 /// </summary>
-public sealed class SkillProgression
+public sealed class SkillProgress
 {
     public QuestTopic ActiveTopicId;
 
@@ -41,19 +42,19 @@ public sealed class SkillProgression
     {
         if (!File.Exists(SkillProgressPath))
         {
-            Data = new SkillProgression(); // Fallback
+            Data = new SkillProgress(); // Fallback
         }
 
         try
         {
-            Data = JsonUtils.TryLoadingJson<SkillProgression>(SkillProgressPath)!;
+            Data = JsonUtils.TryLoadingJson<SkillProgress>(SkillProgressPath)!;
             if (Data == null)
                 throw new Exception("Failed to load SkillProgress");
         }
         catch (Exception e)
         {
             Log.Error($"Failed to load {SkillProgressPath} : {e.Message}");
-            Data = new SkillProgression();
+            Data = new SkillProgress();
         }
     }
 
@@ -63,7 +64,7 @@ public sealed class SkillProgression
         JsonUtils.TrySaveJson(Data, SkillProgressPath);
     }
 
-    internal static void SaveLevelResult(QuestLevel level, SkillProgression.LevelResult result)
+    internal static void SaveLevelResult(QuestLevel level, SkillProgress.LevelResult result)
     {
         Data.Results.Add(result);
         SaveUserData();
@@ -72,9 +73,9 @@ public sealed class SkillProgression
     private static string SkillProgressPath => Path.Combine(FileLocations.SettingsDirectory, "SkillProgress.json");
 
     [Newtonsoft.Json.JsonIgnore]
-    internal static SkillProgression Data = new ();
+    internal static SkillProgress Data = new ();
 
-    internal static bool TryGetLastResult([NotNullWhen(true)] out SkillProgression.LevelResult result)
+    internal static bool TryGetLastResult([NotNullWhen(true)] out SkillProgress.LevelResult result)
     {
         result = null;
         if (Data.Results.Count == 0)
