@@ -40,7 +40,11 @@ internal sealed class RenameSymbolDialog : ModalDialog
 
             
             var symbol = symbolUi.SymbolChild.Symbol;
-            _ = SymbolModificationInputs.DrawSymbolNameInput(ref name, symbol.Namespace, symbol.SymbolPackage, true, out var isNameValid);
+            _ = SymbolModificationInputs.DrawSymbolNameInput(ref name, 
+                                                             symbol.Namespace, 
+                                                             symbol.SymbolPackage, 
+                                                             ImGui.IsWindowAppearing(), 
+                                                             out var isNameValid);
 
             ImGui.Spacing();
                 

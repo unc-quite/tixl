@@ -91,6 +91,7 @@ internal sealed class OperatorHelp
             {
                 EditDescriptionDialog.ShowNextFrame();
             }
+
             CustomComponents.TooltipForLastItem("Click to edit descriptions and links");
         }
 
@@ -217,7 +218,7 @@ internal sealed class OperatorHelp
         private static SymbolUi? _cachedSymbolUi;
         private static Guid _cachedSymbolId;
 
-        private static readonly List<(string Title, string Url, Icon? Icon)> _cachedLinks = [];
+        private static readonly List<(string Title, string Description, string Url, Icon? Icon)> _cachedLinks = [];
         private static readonly List<(SymbolUi SymbolUi, string Name)> _cachedReferencedSymbols = [];
         private static int _cachedSymbolUiVersion = -1;
 
@@ -254,7 +255,11 @@ internal sealed class OperatorHelp
                 if (!string.IsNullOrEmpty(link.Url))
                 {
                     var title = link.Title ?? link.Type.ToString();
-                    _cachedLinks.Add((title, link.Url, ExternalLink.LinkIcons.TryGetValue(link.Type, out var icon) ? icon : (Icon?)null));
+                    _cachedLinks.Add((title,
+                                      link.Url,
+                                      link.Description,
+                                      ExternalLink.LinkIcons.TryGetValue(link.Type, out var icon) ? icon : (Icon?)null)
+                                    );
                 }
             }
 
@@ -296,7 +301,7 @@ internal sealed class OperatorHelp
             ImGui.SameLine();
             ImGui.PushStyleColor(ImGuiCol.Button, Color.Transparent.Rgba);
 
-            foreach (var (title, url, icon) in _cachedLinks)
+            foreach (var (title, description, url, icon) in _cachedLinks)
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, UiColors.StatusAutomated.Rgba);
                 bool clicked;
@@ -313,7 +318,8 @@ internal sealed class OperatorHelp
                 }
 
                 ImGui.PopStyleColor();
-                CustomComponents.TooltipForLastItem("Open link in browser", url);
+                CustomComponents.TooltipForLastItem(string.IsNullOrEmpty(description) ? description : "Open link in browser",
+                                                    url);
 
                 if (clicked)
                     CoreUi.Instance.OpenWithDefaultApplication(url);

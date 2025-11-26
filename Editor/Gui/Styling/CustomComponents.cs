@@ -194,6 +194,7 @@ internal static partial class CustomComponents
     public static bool DrawInputFieldWithPlaceholder(string placeHolderLabel, ref string value, float width = 0, bool showClear = true,
                                                      ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags.None)
     {
+        ImGui.PushID(placeHolderLabel.GetHashCode(StringComparison.Ordinal));
         var notEmpty = !string.IsNullOrEmpty(value);
         var wasNull = value == null;
         if (wasNull)
@@ -226,6 +227,7 @@ internal static partial class CustomComponents
             drawList.AddText(minPos + new Vector2(8, 5), UiColors.ForegroundFull.Fade(0.25f), placeHolderLabel);
             drawList.PopClipRect();
         }
+        ImGui.PopID();
 
         return modified;
     }
