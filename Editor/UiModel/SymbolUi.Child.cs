@@ -73,7 +73,7 @@ public partial class SymbolUi
             {
                 PosOnCanvas = original.PosOnCanvas,
                 Size = original.Size,
-                CollapsedIntoAnnotationFrameId = original.CollapsedIntoAnnotationFrameId,
+                CollapsedIntoAnnotationFrameId = original.CollapsedIntoAnnotationFrameId, // Careful! When duplicating the parent symbol or annotation, this needs to updated.
                 Style = original.Style,
                 Comment = original.Comment,
                 SnapshotGroupIndex = original.SnapshotGroupIndex,

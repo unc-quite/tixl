@@ -60,14 +60,14 @@ internal static class Duplicate
 
         project.ReplaceSymbolUi(newSymbolUi);
 
-        // Apply content to new symbol
+        // Apply content to a new symbol
         var cmd = new CopySymbolChildrenCommand(sourceSymbolUi,
                                                 null,
                                                 new List<Annotation>(),
                                                 newSymbolUi,
                                                 Vector2.One);
         cmd.Do();
-        cmd.OldToNewIdDict.ToList().ForEach(x => oldToNewIdMap.Add(x.Key, x.Value));
+        cmd.OldToNewChildIds.ToList().ForEach(x => oldToNewIdMap.Add(x.Key, x.Value));
 
         // Now copy connection from/to inputs/outputs that are not copied with the command 
         // todo: same code as in Symbol.SetInstanceType, factor out common code

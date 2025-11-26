@@ -91,7 +91,8 @@ internal sealed class DuplicateSymbolDialog : ModalDialog
                     
                     var position = selectedChildUis.First().PosOnCanvas + new Vector2(0, 100);
 
-                    Duplicate.DuplicateAsNewType(compositionSymbolUi, _projectToCopyTo, selectedChildUis.First().SymbolChild.Symbol.Id, newTypeName, nameSpace, description,
+                    Duplicate.DuplicateAsNewType(compositionSymbolUi, _projectToCopyTo, 
+                                                 selectedChildUis.First().SymbolChild.Symbol.Id, newTypeName, nameSpace, description,
                                                  position);
                     
                     result = ChangeSymbol.SymbolModificationResults.StructureChanged;

@@ -21,20 +21,21 @@ public sealed partial class SymbolUi
         return childUi;
     }
 
-    internal Symbol.Child AddChildAsCopyFromSource(Symbol symbolToAdd, Symbol.Child sourceChild, SymbolUi sourceCompositionSymbolUi, Vector2 posInCanvas,
-                                                  Guid newChildId)
+    internal void AddChildAsCopyFromSource(Symbol symbolToAdd, Symbol.Child sourceChild, SymbolUi sourceCompositionSymbolUi, Vector2 posInCanvas,
+                                                  Guid newChildId,
+                                                  out Symbol.Child newChild,
+                                                  out SymbolUi.Child newChildUi)
     {
         FlagAsModified();
-        var newChild = Symbol.AddChild(symbolToAdd, newChildId);
+        newChild = Symbol.AddChild(symbolToAdd, newChildId);
         newChild.Name = sourceChild.Name;
 
         var sourceChildUi = sourceCompositionSymbolUi.ChildUis[sourceChild.Id];
-        var newChildUi = sourceChildUi!.Clone(this, newChild);
+        newChildUi = sourceChildUi!.Clone(this, newChild);
 
         newChildUi.PosOnCanvas = posInCanvas;
 
         _childUis.Add(newChildUi.Id, newChildUi);
-        return newChild;
     }
 
     internal void RemoveChild(Guid id)
