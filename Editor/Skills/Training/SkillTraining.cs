@@ -248,6 +248,12 @@ internal static partial class SkillTraining
                 someLevelsNotCompleted = true;
             }
 
+            if (topic.CompletedLevelCount == 0 && topic.SkippedLevelCount == 0)
+            {
+                topic.ProgressionState = QuestTopic.ProgressStates.NoResultsYet;
+                continue;
+            }
+
             if (someLevelsNotCompleted)
             {
                 topic.ProgressionState = QuestTopic.ProgressStates.Started;
@@ -331,7 +337,10 @@ internal static partial class SkillTraining
             }
 
             if (!allUnlocked)
+            {
+                topic.ProgressionState = QuestTopic.ProgressStates.Locked;    
                 continue;
+            }
 
             topic.ProgressionState = QuestTopic.ProgressStates.Unlocked;
             anyUnlocked = true;

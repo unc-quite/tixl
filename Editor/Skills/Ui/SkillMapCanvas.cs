@@ -81,6 +81,7 @@ internal sealed class SkillMapCanvas : HexCanvas
         var unlockProgressFade = topic.ProgressionState switch
                                      {
                                          QuestTopic.ProgressStates.Upcoming  => 0.2f,
+                                         QuestTopic.ProgressStates.Locked  => 0.5f,
                                          QuestTopic.ProgressStates.Completed => 0.8f,
                                          QuestTopic.ProgressStates.Active    => 0.8f,
                                          _                                   => 1f
