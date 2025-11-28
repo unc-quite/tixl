@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using ImGuiNET;
 using T3.Core.Animation;
+using T3.Core.Model;
 using T3.Editor.Gui;
 using T3.Editor.Gui.Hub;
 using T3.Editor.Gui.Input;
@@ -83,7 +84,10 @@ internal static partial class SkillTraining
         Debug.Assert(_context.ActiveLevel != null);
 
         if (!TryGetSkillsProject(out var skillProject) || _context.ActiveLevel == null)
+        {
+            Log.Error("Can't find skills project");
             return;
+        }
 
         if (!OpenedProject.TryCreateWithExplicitHome(skillProject,
                                                      _context.ActiveLevel.SymbolId,
@@ -400,14 +404,20 @@ internal static partial class SkillTraining
     }
 
 
-    private static bool TryGetSkillsProject([NotNullWhen(true)] out EditableSymbolProject? skillProject)
+    private static bool TryGetSkillsProject([NotNullWhen(true)] out EditorSymbolPackage? skillProject)
     {
         skillProject = null;
-        foreach (var p in EditableSymbolProject.AllProjects)
+        var allProjects = SymbolPackage.AllPackages;
+        
+        //var allProjects = SymbolPackage.AllPackages;
+        foreach (var p in allProjects)
         {
-            if (p.Alias == "Skills")
+            if (p is not EditorSymbolPackage editorProject)
+                continue;
+            
+            if (editorProject.Alias == "Skills")
             {
-                skillProject = p;
+                skillProject = editorProject;
                 return true;
             }
         }

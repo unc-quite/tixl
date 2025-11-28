@@ -1,5 +1,6 @@
 #nullable enable
 using System.Diagnostics.CodeAnalysis;
+using T3.Core.Model;
 using T3.Core.Operator;
 
 namespace T3.Editor.UiModel.ProjectHandling;

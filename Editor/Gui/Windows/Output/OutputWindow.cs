@@ -59,7 +59,7 @@ internal sealed class OutputWindow : Window
     //     }
     // }
 
-    public static bool TryGetPrimaryOutputWindow([NotNullWhen(true)] out OutputWindow outputWindow)
+    public static bool TryGetPrimaryOutputWindow([NotNullWhen(true)] out OutputWindow? outputWindow)
     {
         foreach (var window in OutputWindowInstances)
         {

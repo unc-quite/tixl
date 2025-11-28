@@ -85,7 +85,7 @@ public class ImGuiDx11RenderForm : RenderForm
                        : DragDropEffects.None;
     }
 
-    private void OnDragDrop(object? s, DragEventArgs e)
+    private void OnDragDrop(object s, DragEventArgs e)
     {
         if (this == ProgramWindows.Viewer?.Form) return; // optional
 
