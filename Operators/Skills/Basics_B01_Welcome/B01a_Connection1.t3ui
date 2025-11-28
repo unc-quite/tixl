@@ -1,5 +1,5 @@
 {
-  "Id": "c0065a1d-091a-4fc4-ad36-4430b90d29d4"/*L01_Connection1*/,
+  "Id": "c0065a1d-091a-4fc4-ad36-4430b90d29d4"/*B01a_Connection1*/,
   "Description": "Where the Path Begins",
   "SymbolTags": "16",
   "InputUis": [],
@@ -39,7 +39,6 @@
     {
       "Id": "0686ad8d-9d20-4ced-8bad-2abff7ce1051",
       "Label": "Solution",
-      "Collapsed": "False",
       "Color": {
         "X": 0.6,
         "Y": 0.6,

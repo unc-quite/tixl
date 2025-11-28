@@ -7,7 +7,12 @@
     },
     {
       "Id": "f68298dc-f8d0-4d08-aff5-7d35200f18b3"/*Gradients*/,
-      "DefaultValue": {}
+      "DefaultValue": {
+        "Gradient": {
+          "Interpolation": "Linear",
+          "Steps": []
+        }
+      }
     }
   ],
   "Children": [],

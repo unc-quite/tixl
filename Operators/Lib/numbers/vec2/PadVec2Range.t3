@@ -6,14 +6,18 @@
       "DefaultValue": 1.0
     },
     {
-      "Id": "a31065a9-7a42-4b60-9cb4-3131a00b7d54"/*B*/,
+      "Id": "ae2368fa-e36c-40b2-b6f2-94d5cc95d3e2"/*A*/,
       "DefaultValue": {
-        "X": 1.0,
-        "Y": 1.0
+        "X": 0.0,
+        "Y": 0.0
       }
     },
     {
-      "Id": "ae2368fa-e36c-40b2-b6f2-94d5cc95d3e2"/*A*/,
+      "Id": "d7dcbc7a-146d-42f0-84b1-a7d42f662487"/*ClampMinExtend*/,
+      "DefaultValue": 0.0
+    },
+    {
+      "Id": "e7307b14-2702-4222-9dd6-7c39dc6dab8e"/*GuaranteedRange*/,
       "DefaultValue": {
         "X": 0.0,
         "Y": 0.0

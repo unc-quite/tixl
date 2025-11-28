@@ -1,5 +1,5 @@
 {
-  "Id": "123a1ff1-2935-4d9a-880f-897a7f8885ad"/*B01a_ConnectingValues*/,
+  "Id": "123a1ff1-2935-4d9a-880f-897a7f8885ad"/*B01d_ConnectingValues*/,
   "Description": "Take that value!",
   "SymbolTags": "16",
   "InputUis": [],
@@ -53,7 +53,6 @@
     {
       "Id": "83594797-3ae4-4ab8-8e04-56af86e881c4",
       "Label": "Solution",
-      "Collapsed": "False",
       "Color": {
         "X": 0.6,
         "Y": 0.6,

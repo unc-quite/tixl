@@ -24,6 +24,13 @@
       }
     },
     {
+      "InputId": "b07eab3e-c16d-461f-ba5e-a3f34fe6f0ba"/*Clamp*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 150.0
+      }
+    },
+    {
       "InputId": "d533f4e8-f0a9-4535-b843-107c19bd3cd5"/*InputRange*/,
       "Position": {
         "X": -200.0,

@@ -1,5 +1,5 @@
 {
-  "Id": "ef357e66-24e9-4f54-8d86-869db74602f4"/*PickFromStringList*/,
+  "Id": "ef357e66-24e9-4f54-8d86-869db74602f4"/*PickStringFromList*/,
   "Inputs": [
     {
       "Id": "12ce5fe3-750f-47ed-9507-416cb327a615"/*Index*/,

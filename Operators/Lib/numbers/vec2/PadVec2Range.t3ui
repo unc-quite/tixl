@@ -10,17 +10,24 @@
       }
     },
     {
-      "InputId": "a31065a9-7a42-4b60-9cb4-3131a00b7d54"/*B*/,
-      "Position": {
-        "X": -200.0,
-        "Y": 45.0
-      }
-    },
-    {
       "InputId": "ae2368fa-e36c-40b2-b6f2-94d5cc95d3e2"/*A*/,
       "Position": {
         "X": -200.0,
         "Y": 0.0
+      }
+    },
+    {
+      "InputId": "d7dcbc7a-146d-42f0-84b1-a7d42f662487"/*ClampMinExtend*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 240.0
+      }
+    },
+    {
+      "InputId": "e7307b14-2702-4222-9dd6-7c39dc6dab8e"/*GuaranteedRange*/,
+      "Position": {
+        "X": -200.0,
+        "Y": 165.0
       }
     }
   ],
