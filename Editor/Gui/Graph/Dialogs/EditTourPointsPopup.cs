@@ -1,9 +1,11 @@
-﻿using ImGuiNET;
+﻿using System.Text;
+using ImGuiNET;
 using T3.Core.DataTypes.Vector;
 using T3.Core.Operator;
 using T3.Editor.Gui.Input;
 using T3.Editor.Gui.MagGraph.Interaction;
 using T3.Editor.Gui.Styling;
+using T3.Editor.Skills.Data;
 using T3.Editor.UiModel;
 using T3.Editor.UiModel.Modification;
 using T3.Editor.UiModel.ProjectHandling;
@@ -18,6 +20,17 @@ internal static class EditTourPointsPopup
     internal static void ShowNextFrame()
     {
         _isOpen = true;
+    }
+
+    private static string GetAsMarkdown(SymbolUi symbolUi)
+    {
+        var sb = new StringBuilder();
+        foreach (var tp in symbolUi.TourPoints)
+        {
+            tp.ToMarkdown(sb, symbolUi);
+        }
+
+        return sb.ToString();
     }
 
     internal static ChangeSymbol.SymbolModificationResults Draw(Symbol operatorSymbol, ProjectView projectView)
@@ -35,6 +48,25 @@ internal static class EditTourPointsPopup
 
             ImGui.BeginChild("Inner", Vector2.Zero, false, ImGuiWindowFlags.NoMove);
             {
+                if (CustomComponents.IconButton(Icon.CopyToClipboard, Vector2.Zero))
+                {
+                    ImGui.SetClipboardText(GetAsMarkdown(_compositionUi));
+
+                }
+
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.BeginTooltip();
+                    {
+                        ImGui.PushFont(Fonts.Code);
+                        ImGui.PushTextWrapPos(400);
+                        ImGui.TextWrapped(GetAsMarkdown(_compositionUi));
+                        ImGui.PopTextWrapPos();
+                        ImGui.PopFont();
+                    }
+                    ImGui.EndTooltip();
+                }
+
                 _compositionUi = operatorSymbol.GetSymbolUi();
 
                 // Handle selection
@@ -124,7 +156,7 @@ internal static class EditTourPointsPopup
     {
         var modified = false;
 
-        var isSelected = _selectedChildIds.Contains(tourPoint.ChildId) && tourPoint.Style == TourPoint.Styles.TourPoint;
+        var isSelected = _selectedChildIds.Contains(tourPoint.ChildId) && tourPoint.Style == TourPoint.Styles.InfoFor;
 
         ImGui.PushStyleColor(ImGuiCol.ChildBg, isSelected
                                                    ? Color.Mix(UiColors.BackgroundButton, UiColors.BackgroundActive, 0.1f).Rgba
@@ -137,7 +169,7 @@ internal static class EditTourPointsPopup
         {
             height = 0;
         }
-        
+
         ImGui.BeginChild("item", new Vector2(-5, height), true);
         {
             FormInputs.AddVerticalSpace(3);
@@ -246,7 +278,8 @@ internal static class EditTourPointsPopup
                     ImGui.SetKeyboardFocusHere();
                     _shouldFocusInput = false;
                 }
-                if (ImGui.InputTextMultiline("##Text", ref tourPoint.Title, 16384, new Vector2(-10, 60) * T3Ui.UiScaleFactor))
+
+                if (ImGui.InputTextMultiline("##Text", ref tourPoint.Description, 16384, new Vector2(-10, 60) * T3Ui.UiScaleFactor))
                 {
                     modified = true;
                 }
@@ -258,7 +291,7 @@ internal static class EditTourPointsPopup
             }
             else
             {
-                var text = string.IsNullOrEmpty(tourPoint.Title) ? "Add description..." : tourPoint.Title;
+                var text = string.IsNullOrEmpty(tourPoint.Description) ? "Add description..." : tourPoint.Description;
 
                 ImGui.TextWrapped(text);
                 if (ImGui.IsItemClicked())
@@ -275,7 +308,7 @@ internal static class EditTourPointsPopup
             {
                 TourInteraction.SetProgressIndex(_compositionUi.Symbol.Id, index);
             }
-            
+
             FormInputs.AddVerticalSpace();
 
             _lastItemHeights[index] = ImGui.GetCursorPosY();
@@ -291,10 +324,10 @@ internal static class EditTourPointsPopup
     {
         _compositionUi.TourPoints.Insert(index, new TourPoint
                                                     {
-                                                        Title = string.Empty,
+                                                        Description = string.Empty,
                                                         Id = Guid.NewGuid(),
                                                         ChildId = _firstSelectedChildId,
-                                                        Style = TourPoint.Styles.Comment
+                                                        Style = TourPoint.Styles.Info
                                                     });
     }
 

@@ -74,12 +74,12 @@ internal static class TourInteraction
             // Draw tip
             ImGui.SameLine(0, 4);
 
-            if (!string.IsNullOrEmpty(point.Title))
+            if (!string.IsNullOrEmpty(point.Description))
             {
                 ImGui.PushFont(Fonts.FontLarge);
                 ImGui.PushTextWrapPos(ImGui.GetCursorPosX() + 450 * T3Ui.UiScaleFactor);
-                var typeWriterProgress = (timeSinceInteraction * 200f / (point.Title.Length + 1)).Clamp(0, 1);
-                var shortedText = StringUtils.SliceToProgress(point.Title, typeWriterProgress);
+                var typeWriterProgress = (timeSinceInteraction * 200f / (point.Description.Length + 1)).Clamp(0, 1);
+                var shortedText = StringUtils.SliceToProgress(point.Description, typeWriterProgress);
                 TextParagraphs(shortedText);
                 ImGui.PopTextWrapPos();
                 ImGui.PopFont();
@@ -104,7 +104,7 @@ internal static class TourInteraction
             }
 
             // Draw graph indicator...
-            if (point.Style != TourPoint.Styles.Comment)
+            if (point.Style != TourPoint.Styles.Info)
             {
                 if (compositionUi.ChildUis.TryGetValue(point.ChildId, out var child))
                 {
@@ -152,8 +152,8 @@ internal static class TourInteraction
 
             var buttonLabel = point.Style switch
                                   {
-                                      TourPoint.Styles.Comment   => "Continue...",
-                                      TourPoint.Styles.TourPoint => "Continue when ready",
+                                      TourPoint.Styles.Info   => "Continue...",
+                                      TourPoint.Styles.InfoFor => "Continue when ready",
                                       TourPoint.Styles.Tip       => "Got it!",
                                       _                          => throw new ArgumentOutOfRangeException()
                                   };

@@ -169,9 +169,9 @@ internal static class SymbolUiJson
                 writer.WriteObject(JsonKeys.Label, annotation.Label);
             }
 
-            if(annotation.Collapsed)
+            if (annotation.Collapsed)
                 writer.WriteObject(JsonKeys.Collapsed, annotation.Collapsed);
-            
+
             writer.WritePropertyName(JsonKeys.Color);
             _vector4ToJson(writer, annotation.Color.Rgba);
 
@@ -219,19 +219,26 @@ internal static class SymbolUiJson
         foreach (var tourPoint in symbolUi.TourPoints)
         {
             writer.WriteStartObject();
-            writer.WriteObject(JsonKeys.Id, tourPoint.Id.ToString());
-            writer.WriteObject(JsonKeys.ChildId, tourPoint.ChildId.ToString());
-            writer.WriteObject(JsonKeys.Title, tourPoint.Title ?? string.Empty);
-            
-            if(tourPoint.Style != TourPoint.Styles.Comment)
-                writer.WriteObject(JsonKeys.Style, tourPoint.Style);
-            
+            {
+                writer.WriteObject(JsonKeys.Id, tourPoint.Id.ToString());
+
+                if (tourPoint.ChildId != Guid.Empty)
+                    writer.WriteObject(JsonKeys.ChildId, tourPoint.ChildId.ToString());
+
+                if (tourPoint.InputId != Guid.Empty)
+                    writer.WriteObject(JsonKeys.InputId, tourPoint.InputId.ToString());
+
+                writer.WriteObject(JsonKeys.Description, tourPoint.Description ?? string.Empty);
+
+                if (tourPoint.Style != TourPoint.Styles.Info)
+                    writer.WriteObject(JsonKeys.Style, tourPoint.Style);
+            }
             writer.WriteEndObject();
         }
 
         writer.WriteEndArray();
     }
-    
+
     internal static bool TryReadSymbolUiExternal(JToken mainObject, Symbol symbol, [NotNullWhen(true)] out SymbolUi? symbolUi)
     {
         symbolUi = null;
@@ -433,7 +440,7 @@ internal static class SymbolUiJson
                                 ? childStyle
                                 : SymbolUi.Child.Styles.Default;
 
-            if (JsonUtils.TryGetGuid(childEntry[JsonKeys.AnnotationId], out var annotationId ))
+            if (JsonUtils.TryGetGuid(childEntry[JsonKeys.AnnotationId], out var annotationId))
             {
                 childUi.CollapsedIntoAnnotationFrameId = annotationId;
             }
@@ -533,7 +540,6 @@ internal static class SymbolUiJson
         return linkDict;
     }
 
-    
     private static List<TourPoint> ReadTourPoints(JToken token)
     {
         var tourPoints = new List<TourPoint>();
@@ -545,7 +551,7 @@ internal static class SymbolUiJson
         foreach (var tourPointEntry in tourPointsArray)
         {
             if (!Enum.TryParse<TourPoint.Styles>(tourPointEntry[JsonKeys.Style]?.Value<string>(), out var style))
-                style = TourPoint.Styles.Comment;
+                style = TourPoint.Styles.Info;
 
             if (!JsonUtils.TryGetGuid(tourPointEntry[JsonKeys.Id], out var id))
             {
@@ -553,24 +559,28 @@ internal static class SymbolUiJson
                 continue;
             }
 
-            if (!JsonUtils.TryGetGuid(tourPointEntry[JsonKeys.ChildId], out var childId))
+            JsonUtils.TryGetGuid(tourPointEntry[JsonKeys.ChildId], out var childId);
+            JsonUtils.TryGetGuid(tourPointEntry[JsonKeys.InputId], out var inputId);
+
+            var description = tourPointEntry[JsonKeys.Description]?.Value<string>() ?? string.Empty;
+            if (string.IsNullOrEmpty(description))
             {
-                Log.Warning("Skipping tour point with missing or invalid id");
-                continue;
+                description = tourPointEntry[JsonKeys.Title]?.Value<string>() ?? string.Empty;
             }
 
             tourPoints.Add(new TourPoint
                                {
                                    Id = id,
                                    ChildId = childId,
-                                   Title = tourPointEntry[JsonKeys.Title]?.Value<string>() ?? string.Empty,
+                                   InputId = inputId,
+                                   Description = description,
                                    Style = style,
                                });
         }
 
         return tourPoints;
     }
-    
+
     internal static Vector2 GetVec2OrDefault(JToken? token)
     {
         return token == null ? default : (Vector2)_jsonToVector2(token);
