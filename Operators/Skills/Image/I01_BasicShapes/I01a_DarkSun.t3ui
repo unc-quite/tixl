@@ -89,8 +89,7 @@
   "TourPoints": [
     {
       "Id": "b1e55f1e-e710-4fba-9992-edaaf0711a85",
-      "ChildId": "00000000-0000-0000-0000-000000000000",
-      "Title": "This tour is not ready yet"
+      "Description": "This tour is not ready yet"
     }
   ]
 }

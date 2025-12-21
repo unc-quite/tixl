@@ -22,8 +22,8 @@
     {
       "ChildId": "5131e282-ba05-4b17-8b84-7915a365f2a7"/*Time*/,
       "Position": {
-        "X": 1168.0225,
-        "Y": 1763.7748
+        "X": 1186.2295,
+        "Y": 1724.9136
       }
     },
     {
@@ -36,15 +36,15 @@
     {
       "ChildId": "7ae3df7f-0c33-4c9c-8912-55de8969d44f"/*Sin*/,
       "Position": {
-        "X": 1168.0225,
-        "Y": 1798.7748
+        "X": 1186.2296,
+        "Y": 1795.5363
       }
     },
     {
       "ChildId": "a02faa00-b367-448c-85d8-b112cba9da40"/*Modulo*/,
       "Position": {
-        "X": 1308.0225,
-        "Y": 1763.7748
+        "X": 1186.2296,
+        "Y": 1856.0702
       }
     },
     {
@@ -89,13 +89,12 @@
   "TourPoints": [
     {
       "Id": "8b490de1-24f8-458e-af65-0f89159f0ef1",
-      "ChildId": "00000000-0000-0000-0000-000000000000",
-      "Title": "Combining just a few simple operators can have surprising and unexpected results."
+      "Description": "Combining just a few simple operators can have surprising and unexpected results."
     },
     {
       "Id": "d192114b-3170-45f5-9391-75b20a464140",
       "ChildId": "5131e282-ba05-4b17-8b84-7915a365f2a7",
-      "Title": "Tip: You might need to use [Time]'s output multiple times...",
+      "Description": "Tip: You might need to use [Time]'s output multiple times...",
       "Style": "Tip"
     }
   ]

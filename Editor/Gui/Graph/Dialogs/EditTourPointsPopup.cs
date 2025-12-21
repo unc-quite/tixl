@@ -109,7 +109,7 @@ internal static class EditTourPointsPopup
                 ImGui.SameLine();
                 if (ImGui.Button("Import from Clipboard"))
                 {
-                    TourDataMarkdownExport.TryPasteTourData(_compositionUi);
+                    TourDataMarkdownExport.TryPasteTourData(_compositionUi, projectView);
                 }
                 
                 // Handle selection

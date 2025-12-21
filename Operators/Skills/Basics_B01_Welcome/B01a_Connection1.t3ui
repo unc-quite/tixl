@@ -20,9 +20,10 @@
     },
     {
       "ChildId": "db2c4eab-f92a-4d5d-a465-dbe30c438daf"/*RoundedRect*/,
+      "AnnotationId": "0686ad8d-9d20-4ced-8bad-2abff7ce1051",
       "Position": {
-        "X": 1291.7075,
-        "Y": 2086.5757
+        "X": 1298.8163,
+        "Y": 2085.988
       }
     }
   ],
@@ -39,6 +40,7 @@
     {
       "Id": "0686ad8d-9d20-4ced-8bad-2abff7ce1051",
       "Label": "Solution",
+      "Collapsed": "True",
       "Color": {
         "X": 0.6,
         "Y": 0.6,
@@ -46,8 +48,8 @@
         "W": 1.0
       },
       "Position": {
-        "X": 1279.0485,
-        "Y": 2050.0542
+        "X": 1286.1572,
+        "Y": 2049.4666
       },
       "Size": {
         "X": 230.0,
@@ -59,24 +61,22 @@
     {
       "Id": "7e6bc27a-5dd8-4df5-a5b7-84ae7d15d279",
       "ChildId": "346a5eef-0135-4d15-9841-1a82bba84fc7",
-      "Title": "In these first Levels I will walk you through the basics of using the TiXL's node graph."
+      "Description": "In these first Levels I will walk you through the basics of using the TiXL's node graph."
     },
     {
       "Id": "1a5a421e-a96e-4c66-983f-f1286ca06d68",
       "ChildId": "08c5f3b7-76ad-4e6d-8536-493c3952510c",
-      "Title": "Each Level shows its solution on the bottom. \nYour task is to replicate that solution by using the available Operators and connect them to the [Quiz] operator on the right.\n",
-      "Style": "TourPoint"
+      "Description": "Each Level shows its solution on the bottom. \nYour task is to replicate that solution by using the available Operators and connect them to the [Quiz] operator on the right.\n"
     },
     {
       "Id": "6566d948-3ee6-4a80-827d-ad3f414d53db",
       "ChildId": "346a5eef-0135-4d15-9841-1a82bba84fc7",
-      "Title": "Tip: If you get stuck, you can always expand and take a look at the Solution."
+      "Description": "Tip: If you get stuck, you can always expand and take a look at the Solution."
     },
     {
       "Id": "7cf2cc9a-cc99-4be4-b209-735cb12e62dc",
       "ChildId": "346a5eef-0135-4d15-9841-1a82bba84fc7",
-      "Title": "Let's start by learning how to connect Operators:\nFind the [ImageQuiz] operator and drag a connection from its output connector onto the [ImageResult].",
-      "Style": "TourPoint"
+      "Description": "Let's start by learning how to connect Operators:\nFind the [ImageQuiz] operator and drag a connection from its output connector onto the [ImageResult]."
     }
   ]
 }

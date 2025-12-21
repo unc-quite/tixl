@@ -82,8 +82,7 @@
     {
       "Id": "97092ce7-e7fd-4776-b8b6-898e9e762f4f",
       "ChildId": "c3bb7cb9-ceef-43dd-b533-464b1f27201e",
-      "Title": "Sometimes it's useful to drag an Operator out of a stack...\nThat orange [Blob] Operator is really bright! \nTry to remove it from the stack: Just long-press and dragging it out...\n",
-      "Style": "TourPoint"
+      "Description": "Sometimes it's useful to drag an Operator out of a stack...\nThat orange [Blob] Operator is really bright! \nTry to remove it from the stack: Just long-press and dragging it out...\n"
     }
   ]
 }
