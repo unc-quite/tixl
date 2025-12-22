@@ -40,13 +40,21 @@ internal static partial class SkillTraining
         _context.GraphWindow = graphWindow;
     }
     
-    
-
     public static void StartTopic(QuestTopic topic)
     {
         SkillProgress.Data.ActiveTopicId = topic.Id;
         SkillProgress.SaveUserData();
         UpdateTopicStatesAndProgression();
+        StartActiveLevel();
+    }
+    
+    public static void StartTopicLevel(QuestTopic topic, QuestLevel level)
+    {
+        if (!topic.Levels.Contains(level))
+            return;
+        
+        SkillProgress.Data.ActiveTopicId = topic.Id;
+        _context.ActiveLevel = level;
         StartActiveLevel();
     }
 
@@ -98,22 +106,13 @@ internal static partial class SkillTraining
             return;
         }
 
-        // Keep the original UI only once because it might not be
-        // fully restored between level jumps.
-        if (!_savedOriginalLayout || forceSaveUiState)
-        {
-            _context.PreviousUiState = UiConfig.KeepUiState();
-            _savedOriginalLayout = true;
-        }
-
-        // Switch layout
-        LayoutHandling.LoadAndApplyLayoutOrFocusMode(LayoutHandling.Layouts.SkillQuest);
+        SwitchToMinimalLayout(forceSaveUiState);
 
         // Check if for some reason Output window is not accessible after loading layout
         if (!OutputWindow.TryGetPrimaryOutputWindow(out var outputWindow))
         {
             Log.Debug("Can't access primary output window");
-            UiConfig.ApplyUiState(_context.PreviousUiState!);
+            RestoreUi();
             _context.StateMachine.SetState(SkillTrainingStates.Inactive, _context);
             return;
         }
@@ -138,7 +137,7 @@ internal static partial class SkillTraining
         if (rootInstance == null)
         {
             Log.Debug("Failed to load root");
-            UiConfig.ApplyUiState(_context.PreviousUiState);
+            RestoreUi();
             _context.StateMachine.SetState(SkillTrainingStates.Inactive, _context);
             return;
         }
@@ -150,6 +149,8 @@ internal static partial class SkillTraining
 
         _context.StateMachine.SetState(SkillTrainingStates.Playing, _context);
     }
+
+
 
     internal static void Update()
     {
@@ -442,6 +443,29 @@ internal static partial class SkillTraining
         _context.StateMachine.SetState(SkillTrainingStates.Inactive, _context);
     }
 
+    private static void SwitchToMinimalLayout(bool forceSaveUiState)
+    {
+        // Keep the original UI only once because it might not be
+        // fully restored between level jumps.
+        if (!_savedOriginalLayout || forceSaveUiState)
+        {
+            _context.PreviousUiState = UiConfig.KeepUiState();
+            _savedOriginalLayout = true;
+        }
+
+        // Switch layout
+        LayoutHandling.LoadAndApplyLayoutOrFocusMode(LayoutHandling.Layouts.SkillQuest);
+        UserSettings.SaveDisabled = true;
+    }
+
+    private static void RestoreUi()
+    {
+        if(_context.PreviousUiState != null)
+            UiConfig.ApplyUiState(_context.PreviousUiState);
+
+        UserSettings.SaveDisabled = false;
+    }    
+    
     public static bool IsInPlayMode => (_context.StateMachine.CurrentState == SkillTrainingStates.Playing ||
                                         _context.StateMachine.CurrentState == SkillTrainingStates.Completed);
 

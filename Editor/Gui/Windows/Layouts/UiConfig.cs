@@ -91,6 +91,7 @@ internal static class UiConfig
                                         UserSettings.Config.WindowLayoutIndex,
                                         UserSettings.Config.FocusMode,
                                         UserSettings.Config.ShowInteractionOverlay,
+                                        UserSettings.Config.ShowMiniMap,
                                         UserSettings.Config.GraphStyle
                                        );
     }
@@ -108,6 +109,7 @@ internal static class UiConfig
         UserSettings.Config.FocusMode= state.IsFocusMode;
         UserSettings.Config.ShowInteractionOverlay = state.InteractionOverlay;
         UserSettings.Config.GraphStyle = state.GraphStyle;
+        UserSettings.Config.ShowMiniMap = state.ShowMiniMap;
         
         UserSettings.Config.WindowLayoutIndex= state.WindowLayoutIndex;
         LayoutHandling.LoadAndApplyLayoutOrFocusMode((LayoutHandling.Layouts)state.WindowLayoutIndex);
@@ -122,5 +124,6 @@ internal static class UiConfig
         int WindowLayoutIndex,
         bool IsFocusMode,
         bool InteractionOverlay,
+        bool ShowMiniMap,
         UserSettings.GraphStyles GraphStyle);
 }
