@@ -188,7 +188,18 @@ public static class WasapiAudioInput
         }
         
         var level = BassWasapi.GetLevel();
-        _lastAudioLevel = (float)(level * 0.00001);
+        if (level >= 0)
+        {
+            var midLevel = (float)((MathF.Sqrt(2)) * (short)(level & 0xffff + (level >> 16) & 0xffff) / 2);
+            
+            _lastAudioLevel = (float)(level * 0.00001);
+            // _lastAudioLevel = (float) (midLevel / 32768f * 100000);
+            //(float)((int)((long)level * (long)(int.MaxValue - int.MinValue) / 32768 + int.MinValue) * 0.00001);
+
+
+        }
+        // _lastAudioLevel = (float)(level * 0.00001);
+            // _lastAudioLevel = (float) (midLevel / 32768f * 100000);
 
         var playbackSettings = Playback.Current?.Settings;
         if (playbackSettings == null) 
