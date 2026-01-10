@@ -26,21 +26,26 @@ internal static class RenderPaths
                    : path;
     }
 
+    public static string GetTargetFilePath(RenderSettings.RenderModes mode)
+    {
+        if (mode == RenderSettings.RenderModes.Video)
+        {
+            return ResolveProjectRelativePath(UserSettings.Config.RenderVideoFilePath ?? string.Empty);
+        }
+
+        var folder = ResolveProjectRelativePath(UserSettings.Config.RenderSequenceFilePath ?? string.Empty);
+        var baseName = UserSettings.Config.RenderSequenceFileName ?? "output";
+        return Path.Combine(folder, baseName);
+    }
+
+    public static bool FileExists(string targetFile)
+    {
+        return File.Exists(targetFile);
+    }
+
     public static bool ValidateOrCreateTargetFolder(string targetFile)
     {
         var directory = Path.GetDirectoryName(targetFile);
-        if (targetFile != directory && File.Exists(targetFile))
-        {
-            var info = new FileInfo(targetFile);
-            
-            if (info.Length == 0 || !info.IsReadOnly) // It's fine to override 0 size files
-            {
-                
-                var result = BlockingWindow.Instance.ShowMessageBox($"File {targetFile} exists. Overwrite?", "Render Video", "Yes", "No");
-                return result == "Yes";
-            }
-        }
-
         if (directory == null || Directory.Exists(directory))
             return true;
 

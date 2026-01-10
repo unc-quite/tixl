@@ -157,6 +157,7 @@ internal static class RenderProcess
         }
         
         var targetFilePath = GetTargetFilePath(renderSettings.RenderMode);
+        
         if (!RenderPaths.ValidateOrCreateTargetFolder(targetFilePath))
             return;
 
@@ -208,12 +209,7 @@ internal static class RenderProcess
     private static int GetRealFrame() => _activeSession!.FrameIndex - MfVideoWriter.SkipImages;
     
     
-    private static string GetTargetFilePath(RenderSettings.RenderModes renderMode)
-    {
-        return renderMode == RenderSettings.RenderModes.Video
-                   ? RenderPaths.ResolveProjectRelativePath(UserSettings.Config.RenderVideoFilePath)
-                   : RenderPaths.ResolveProjectRelativePath(UserSettings.Config.RenderSequenceFilePath);
-    }
+    private static string GetTargetFilePath(RenderSettings.RenderModes renderMode) => RenderPaths.GetTargetFilePath(renderMode);
 
     public static void Cancel(string? reason = null)
     {
