@@ -54,7 +54,7 @@ namespace T3.Editor.Gui.Windows.Utilities
         private const int DefaultHeight = 1024;
         private const float DefaultMiterLimit = 3.0f;
         private const int DefaultSpacing = 2;
-        private const float DefaultRange = 2.0f;
+        private const float DefaultRange = 7.0f;
         private const float DefaultAngleThreshold = 3.0f;
         private const ColoringStrategy DefaultExampleColoring = ColoringStrategy.Simple; // As per recommended settings
         private const ErrorCorrectionMode DefaultErrorCorrection = ErrorCorrectionMode.Indiscriminate;
