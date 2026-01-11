@@ -1,5 +1,6 @@
 using ImGuiNET;
 using T3.Core.DataTypes;
+using T3.Core.Operator;
 using T3.Core.SystemUi;
 using T3.Editor.Gui.Graph.Dialogs;
 using T3.Editor.Gui.Interaction;
@@ -12,6 +13,7 @@ using T3.Editor.Gui.Styling;
 using T3.Editor.UiModel;
 using T3.Editor.UiModel.Commands;
 using T3.Editor.UiModel.Exporting;
+using T3.Editor.UiModel.Helpers;
 using T3.Editor.UiModel.InputsAndTypes;
 using T3.Editor.UiModel.Modification;
 using T3.Editor.UiModel.ProjectHandling;
@@ -37,6 +39,46 @@ internal static class GraphContextMenu
             UndoRedoStack.Undo();
         }
 
+        if (ImGui.BeginMenu("Select..."))
+        {
+            if (ImGui.MenuItem("Custom Operators"))
+            {
+                var foundAny = false;
+                var childUis = selectedChildUis.Count > 0 
+                                   ? selectedChildUis.ToList() 
+                                   : context.CompositionInstance.Children.Values.Select(c => c.GetChildUi());
+                
+                if(selectedChildUis.Count > 0)
+                    nodeSelection.Clear();
+                
+                foreach (var item in childUis)
+                {
+                    if (item == null)
+                        continue;
+                    
+                    if (SymbolAnalysis.TryGetOperatorType(item.SymbolChild.Symbol, out var type) 
+                         && type != SymbolAnalysis.OperatorClassification.Unknown)
+                    {
+                        continue;
+                    }
+
+                    if (context.CompositionInstance.Children.TryGetChildInstance(item.Id, out var instance))
+                    {
+                        nodeSelection.AddSelection(item, instance);
+                    }
+
+                    foundAny = true;
+                }
+                if (foundAny)
+                {
+                    context.ProjectView.FocusViewToSelection();
+                }
+            }
+            
+            ImGui.EndMenu();   
+        }
+        
+        
         ImGui.Separator();
 
         // ------ for selection -----------------------
