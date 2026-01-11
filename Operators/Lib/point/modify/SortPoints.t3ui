@@ -19,6 +19,13 @@
       }
     },
     {
+      "InputId": "6834aef5-adbd-47ae-92b8-5526001b2b75"/*Ascending*/,
+      "Position": {
+        "X": 526.0576,
+        "Y": 1572.2007
+      }
+    },
+    {
       "InputId": "959158f6-06db-487a-8c56-e47033536828"/*SortingSpeed*/,
       "Position": {
         "X": 526.0576,
@@ -201,6 +208,13 @@
       "Position": {
         "X": 1137.4219,
         "Y": 2575.372
+      }
+    },
+    {
+      "ChildId": "72b7dc40-e056-4f38-8af6-2294e9b725b4"/*BoolToInt*/,
+      "Position": {
+        "X": 704.97925,
+        "Y": 1676.8062
       }
     },
     {

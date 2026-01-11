@@ -9,6 +9,7 @@ cbuffer IntParams : register(b0)
     uint BufferLength;
     int FrameIndex;
     int TotalSteps;
+    int Ascending;
 }
 
 cbuffer Transforms : register(b1)
@@ -33,9 +34,12 @@ StructuredBuffer<Point> SourcePoints : t0;
 float c2k(Point c){
     float3 p=c.Position.xyz;
     if(isnan(c.Scale.x)){return -1;}
-    // return -mul(float4(c.Position.xyz,1),WorldToCamera).z;
-    return length(c.Position.xyz-CameraToWorld[3].xyz);
+    float k=length(c.Position.xyz-CameraToWorld[3].xyz);
+    // float k=-mul(float4(c.Position.xyz,1),WorldToCamera).z;//viewspace z
+    if(Ascending>0)k=-k;
+    return k;
 }
+
 #define linstep(a,b,x) saturate((x-a)/(b-a))
 
 [numthreads(32,32,1)]
@@ -48,25 +52,23 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     uint idx=DTid.x+DTid.y*TexSize.x;
     idx=idx/((TexSize.x*TexSize.y)/BufferLength);
-    float4 c=1;
-    float2 uv=float2(DTid.xy)/TexSize;
-    c.xy=uv;
-    c.z=0.0;
-    c.a=1.0;
-    float progress=float(FrameIndex)/TotalSteps;
+    
+
+
     if(idx<BufferLength){
         
         uint sid=IndexBuffer[idx].x;
 
         Particle p=SourcePoints[sid];
-        // ColorOutput[DTid.xy]=p.Color;
-        float smp=0.15;
-        smp=c2k(p);
-        // smp/=c2k(SourcePoints[IndexBuffer[0]]);
+
+        float smp=c2k(p);
         smp=linstep(c2k(SourcePoints[IndexBuffer[BufferLength-1].x]),c2k(SourcePoints[IndexBuffer[0].x]),smp);
-        ColorOutput[DTid.xy]=float4(smp.xxx,1)+0*float4(0,0,(uv.y>.95)*(uv.x<progress),0);  
+        if(Ascending>0)smp=1-smp;
+        ColorOutput[DTid.xy]=float4(smp.xxx,1);  
 
     }else{
+        float2 uv=float2(DTid.xy)/TexSize;
+        float4 c=float4(uv.xy,0,1);
         ColorOutput[DTid.xy]=c;   
     }
 }

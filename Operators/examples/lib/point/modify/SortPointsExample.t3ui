@@ -102,6 +102,13 @@
       }
     },
     {
+      "ChildId": "2606549d-1f8b-4161-9624-ea46604205db"/*GridPoints*/,
+      "Position": {
+        "X": 252.07623,
+        "Y": 2817.55
+      }
+    },
+    {
       "ChildId": "3264a728-f452-4e9b-95c5-f067878a58fa"/*RenderTarget*/,
       "Position": {
         "X": 1437.2422,
@@ -111,8 +118,8 @@
     {
       "ChildId": "38c70f3d-f985-4087-a256-38d3213fa634"/*ReuseCamera*/,
       "Position": {
-        "X": 1888.5759,
-        "Y": 2439.4023
+        "X": 1791.7432,
+        "Y": 2393.9502
       }
     },
     {
@@ -144,10 +151,24 @@
       }
     },
     {
+      "ChildId": "47560e67-dd8a-46a9-82a9-3e9c280e6be1"/*Execute*/,
+      "Position": {
+        "X": 868.7697,
+        "Y": 3031.179
+      }
+    },
+    {
       "ChildId": "4904f0ba-00b2-446d-a8fb-e59e18765d07"/*fake shadow coloring*/,
       "Position": {
         "X": 299.64175,
         "Y": 2243.9229
+      }
+    },
+    {
+      "ChildId": "5447ab79-9d2e-46ca-ac07-607dda1ec1d3"/*PerlinNoise3*/,
+      "Position": {
+        "X": 134.40662,
+        "Y": 3016.3896
       }
     },
     {
@@ -176,6 +197,13 @@
       "Position": {
         "X": 1268.5896,
         "Y": 1303.0549
+      }
+    },
+    {
+      "ChildId": "6b31cb5c-5ebb-41a1-a76d-4c779b2b9342"/*SortPoints*/,
+      "Position": {
+        "X": 448.7697,
+        "Y": 3066.179
       }
     },
     {
@@ -244,8 +272,8 @@
     {
       "ChildId": "8d328111-d6e4-4412-b84f-14aa53830aaf"/*RenderTarget*/,
       "Position": {
-        "X": 2028.576,
-        "Y": 2439.4023
+        "X": 1931.7433,
+        "Y": 2393.9502
       }
     },
     {
@@ -260,6 +288,13 @@
       "Position": {
         "X": 914.01697,
         "Y": 1257.1733
+      }
+    },
+    {
+      "ChildId": "8fb99963-f129-4616-be5c-07eeb295c63d"/*TransformPoints*/,
+      "Position": {
+        "X": 283.18365,
+        "Y": 2876.9397
       }
     },
     {
@@ -291,6 +326,13 @@
       }
     },
     {
+      "ChildId": "9ebabbc7-66ae-4ee3-a8b8-703898262e82"/*VisualizePoints*/,
+      "Position": {
+        "X": 728.7697,
+        "Y": 3066.179
+      }
+    },
+    {
       "ChildId": "a80b5927-e1cb-461c-8128-c8cec9622326"/*Layer2d*/,
       "Position": {
         "X": 1289.7579,
@@ -302,6 +344,13 @@
       "Position": {
         "X": 1694.1436,
         "Y": 860.89453
+      }
+    },
+    {
+      "ChildId": "b18c1afd-ee5f-4110-8d77-6b7561d4ef31"/*FilterPoints*/,
+      "Position": {
+        "X": 588.7697,
+        "Y": 3066.179
       }
     },
     {
@@ -487,6 +536,13 @@
       }
     },
     {
+      "ChildId": "fda42e35-a3a8-45e2-9959-2d9e4972aadf"/*Camera*/,
+      "Position": {
+        "X": 274.40662,
+        "Y": 2981.3896
+      }
+    },
+    {
       "ChildId": "fdc2c0b5-1440-4fa0-bf85-45ffd7226be1"/*Execute*/,
       "Position": {
         "X": 1613.2643,
@@ -506,7 +562,7 @@
   "Annotations": [
     {
       "Id": "0c4abf95-e6ca-44ba-96f4-d081c97368b8",
-      "Title": "otherwise need to add inverse transform to sortpoints",
+      "Title": "otherwise need to add inverse transform to the camera(position) sent to sortpoints",
       "Label": "should be no additional transforms between points and camera",
       "Color": {
         "X": 0.6,
@@ -561,8 +617,9 @@
       }
     },
     {
-      "Id": "cf759201-1ec8-4b27-9fc0-f5de408df4dd",
-      "Label": "could use some random rotation here",
+      "Id": "8cfabc04-6e5b-471d-8c7f-1dd7f394b4dc",
+      "Title": "setting order to ascending,\ncan select N points that are nearest to some coords (using dummy camera position)",
+      "Label": "ascending+filter",
       "Color": {
         "X": 0.6,
         "Y": 0.6,
@@ -570,12 +627,12 @@
         "W": 1.0
       },
       "Position": {
-        "X": 1519.992,
-        "Y": 2283.415
+        "X": 74.40662,
+        "Y": 2697.55
       },
       "Size": {
-        "X": 230.0,
-        "Y": 265.0
+        "X": 1053.6039,
+        "Y": 559.3379
       }
     },
     {

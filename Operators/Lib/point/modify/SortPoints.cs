@@ -16,6 +16,9 @@ namespace Lib.point.modify{
         [Input(Guid = "959158f6-06db-487a-8c56-e47033536828")]
         public readonly InputSlot<float> SortingSpeed = new InputSlot<float>();
 
+        [Input(Guid = "6834aef5-adbd-47ae-92b8-5526001b2b75")]
+        public readonly InputSlot<bool> Ascending = new InputSlot<bool>();
+
         [Output(Guid = "629d9b6a-67bf-4b95-bb9f-acc8297da07c")]
         public readonly Slot<T3.Core.DataTypes.BufferWithViews> Output = new Slot<T3.Core.DataTypes.BufferWithViews>();
 
