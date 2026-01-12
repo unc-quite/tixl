@@ -39,6 +39,10 @@ internal static class GraphContextMenu
             UndoRedoStack.Undo();
         }
 
+        // ------ for selection -----------------------
+        var oneOpSelected = selectedChildUis.Count == 1;
+        var someOpsSelected = selectedChildUis.Count > 0;
+        
         if (ImGui.BeginMenu("Select..."))
         {
             if (ImGui.MenuItem("Custom Operators"))
@@ -74,6 +78,64 @@ internal static class GraphContextMenu
                     context.ProjectView.FocusViewToSelection();
                 }
             }
+
+            if (ImGui.MenuItem("Select connected", enabled:someOpsSelected))
+            {
+                var connectedIds = new HashSet<Guid>();
+
+                var selectedChildren = new List<Symbol.Child>();
+                foreach (var child in selectedChildUis)
+                {
+                    selectedChildren.Add(child.SymbolChild);
+                }
+                
+                Structure.CollectConnectedChildIds(context.CompositionInstance.Symbol, selectedChildren, connectedIds);
+
+                if (connectedIds.Count > 0)
+                {
+                    context.Selector.Clear();
+                    foreach (var id in connectedIds)
+                    {
+                        if (context.CompositionInstance.Children.TryGetChildInstance(id, out var instance) )
+                        {
+                            var node = instance.GetChildUi();
+                            if (node != null)
+                            {
+                                context.Selector.AddSelection(node, instance);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (ImGui.MenuItem("Select connected inputs", enabled:someOpsSelected))
+            {
+                var connectedIds = new HashSet<Guid>();
+                foreach (var child in selectedChildUis)
+                {
+                    Structure.CollectConnectedChildren(child.SymbolChild, 
+                                                       context.CompositionInstance.Symbol, 
+                                                       connectedIds);
+                }
+                
+                
+                if (connectedIds.Count > 0)
+                {
+                    context.Selector.Clear();
+                    foreach (var id in connectedIds)
+                    {
+                        if (context.CompositionInstance.Children.TryGetChildInstance(id, out var instance) )
+                        {
+                            var node = instance.GetChildUi();
+                            if (node != null)
+                            {
+                                context.Selector.AddSelection(node, instance);
+                            }
+                        }
+                    }
+                }
+            }
+            
             
             ImGui.EndMenu();   
         }
@@ -81,9 +143,7 @@ internal static class GraphContextMenu
         
         ImGui.Separator();
 
-        // ------ for selection -----------------------
-        var oneOpSelected = selectedChildUis.Count == 1;
-        var someOpsSelected = selectedChildUis.Count > 0;
+
         var snapShotsEnabledFromSomeOps
             = selectedChildUis
                .Any(selectedChildUi => selectedChildUi.EnabledForSnapshots);
@@ -450,4 +510,6 @@ internal static class GraphContextMenu
         // }
         //ImGui.EndMenu();
     }
+
+
 }
