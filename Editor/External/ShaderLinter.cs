@@ -25,9 +25,9 @@ internal static class ShaderLinter
         var virtualIncludeDirectories = jsonObject.VirtualDirectoryMappings;
 
         resourceFolderList.Add(package.ResourcesFolder);
-        if (package.Alias != null)
+        if (package.Name != null)
         {
-            virtualIncludeDirectories.Add('/' + package.Alias, package.ResourcesFolder);
+            virtualIncludeDirectories.Add('/' + package.Name, package.ResourcesFolder);
         }
 
         if (additionalPackages is not null)
@@ -35,9 +35,9 @@ internal static class ShaderLinter
             foreach (var p in additionalPackages)
             {
                 resourceFolderList.Add(p.ResourcesFolder);
-                if (p.Alias != null)
+                if (p.Name != null)
                 {
-                    virtualIncludeDirectories.TryAdd('/' + p.Alias, p.ResourcesFolder);
+                    virtualIncludeDirectories.TryAdd('/' + p.Name, p.ResourcesFolder);
                 }
             }
         }

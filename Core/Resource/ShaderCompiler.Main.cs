@@ -22,7 +22,7 @@ public abstract partial class ShaderCompiler
 
         foreach (var include in includes)
         {
-            if (!ResourceManager.TryResolveRelativePath(include, includeDirectories, out _, out _))
+            if (!ResourceManager.TryResolveUri(include, includeDirectories, out _, out _))
             {
                 reason = $"Can't find include file: {include}";
                 shader = null;
@@ -167,7 +167,7 @@ public abstract partial class ShaderCompiler
     public sealed class ShaderResourcePackage : IResourcePackage
     {
         public string DisplayName => ResourcesFolder;
-        public string? Alias => null;
+        public string? Name => null;
         public string ResourcesFolder { get; }
         public ResourceFileWatcher? FileWatcher => _resourceConsumer?.Package?.FileWatcher;
         public string? RootNamespace => _resourceConsumer?.Package?.RootNamespace;

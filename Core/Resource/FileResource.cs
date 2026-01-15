@@ -110,7 +110,7 @@ public sealed partial class FileResource: IResource
             return false;
         }
         
-        if (!ResourceManager.TryResolveRelativePath(relativePath, owner, out var absolutePath, out var resourceContainer))
+        if (!ResourceManager.TryResolveUri(relativePath, owner, out var absolutePath, out var resourceContainer))
         {
             var message = $"Path not found: '{relativePath}' (Resolved to '{absolutePath}').";
             if (owner is Instance instance)

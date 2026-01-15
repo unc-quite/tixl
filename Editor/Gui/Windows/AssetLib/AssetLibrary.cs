@@ -67,16 +67,16 @@ internal sealed partial class AssetLibrary : Window
         _state.AllAssets.Clear();
         AssetTypeRegistry.ClearMatchingFileCounts();
         
-        var filePaths = ResourceManager.EnumerateResources([],
+        var filePaths = ResourceManager.EnumeratePackagesUris([],
                                                            isFolder: false,
                                                            _state.Composition.AvailableResourcePackages,
-                                                           ResourceManager.PathMode.Aliased);
+                                                           ResourceManager.PathMode.PackageUri);
 
         foreach (var aliasedPath in filePaths)
         {
             if (!_state.AssetCache.TryGetValue(aliasedPath, out var asset))
             {
-                if (!ResourceManager.TryResolveRelativePath(aliasedPath, _state.Composition, out var absolutePath, out var package))
+                if (!ResourceManager.TryResolveUri(aliasedPath, _state.Composition, out var absolutePath, out var package))
                 {
                     Log.Warning($"Can't find file {aliasedPath}");
                     continue;
@@ -153,7 +153,7 @@ internal sealed partial class AssetLibrary : Window
         if (TryGetFileInputFromInstance(instance, out _state.ActivePathInput, out var stringInputUi))
         {
             var filePath = _state.ActivePathInput.GetCurrentValue();
-            ResourceManager.TryResolveRelativePath(filePath, instance, out _state.ActiveAbsolutePath, out _);
+            ResourceManager.TryResolveUri(filePath, instance, out _state.ActiveAbsolutePath, out _);
 
             if (UserSettings.Config.SyncWithOperatorSelection)
             {

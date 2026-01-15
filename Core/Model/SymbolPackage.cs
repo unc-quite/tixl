@@ -353,7 +353,7 @@ public abstract partial class SymbolPackage : IResourcePackage
     }
 
     public virtual ResourceFileWatcher? FileWatcher => null;
-    public string Alias => AssemblyInformation.Name;
+    public string Name => AssemblyInformation.Name;
     public virtual bool IsReadOnly => true;
 
     public void AddResourceDependencyOn(FileResource resource)

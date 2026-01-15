@@ -47,7 +47,7 @@ internal static class FilePickingUi
         }
 
         var isFolder = type == FileOperations.FilePickerTypes.Folder;
-        var exists = ResourceManager.TryResolveRelativePath(filterAndSelectedPath, SearchResourceConsumer, out _, out _, isFolder);
+        var exists = ResourceManager.TryResolveUri(filterAndSelectedPath, SearchResourceConsumer, out _, out _, isFolder);
 
         var warning = type switch
                           {
@@ -70,10 +70,10 @@ internal static class FilePickingUi
         var inputEditStateFlags = InputEditStateFlags.Nothing;
         if (filterAndSelectedPath != null && SearchResourceConsumer != null)
         {
-            var allItems = ResourceManager.EnumerateResources(fileFiltersInCommon,
+            var allItems = ResourceManager.EnumeratePackagesUris(fileFiltersInCommon,
                                                               isFolder,
                                                               SearchResourceConsumer.AvailableResourcePackages,
-                                                              ResourceManager.PathMode.Aliased);
+                                                              ResourceManager.PathMode.PackageUri);
 
             var changed = ResourceInputWithTypeAheadSearch.Draw("##filePathSearch", allItems, !exists, ref filterAndSelectedPath, out _);
 
@@ -172,10 +172,10 @@ internal static class FilePickingUi
                                         bool isFolder, bool async)
     {
         var rootDirectories = packagesInCommon
-                                .Concat(ResourceManager.GetSharedPackagesForFilters(fileFiltersInCommon, isFolder, out var culledFilters))
+                                .Concat(ResourceManager.GetSharedPackagesForFiltersForFileManager(fileFiltersInCommon, isFolder, out var culledFilters))
                                 .Distinct()
                                 .OrderBy(package => !package.IsReadOnly)
-                                .Select(package => new ManagedDirectory(package.ResourcesFolder, package.IsReadOnly, !package.IsReadOnly, package.Alias));
+                                .Select(package => new ManagedDirectory(package.ResourcesFolder, package.IsReadOnly, !package.IsReadOnly, package.Name));
 
         var fileManagerMode = type == FileOperations.FilePickerTypes.File ? FileManagerMode.PickFile : FileManagerMode.PickDirectory;
 

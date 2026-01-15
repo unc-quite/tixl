@@ -11,14 +11,13 @@ namespace T3.Core.Resource;
 
 public static partial class ResourceManager
 {
-    private static bool RelativePathBackwardsCompatibility(string relativePath, 
+    private static bool LocalPathBackwardsCompatibility(string filePath, 
                                                            out bool isAbsolute, 
                                                            [NotNullWhen(true)] out List<Range>? backCompatPaths)
     {
         backCompatPaths = null;
-        if (Path.IsPathRooted(relativePath))
+        if (Path.IsPathRooted(filePath))
         {
-            
             // var isProbablyFromFilePathScanning = relativePath.IndexOf("Editor/bin/Debug/net9.0-windows/Resources", StringComparison.Ordinal) != -1;
             // if(!isProbablyFromFilePathScanning)
             //     Log.Warning($"Path '{relativePath}' is not relative. This is deprecated and should be relative to the project Resources folder as " +
@@ -30,7 +29,7 @@ public static partial class ResourceManager
 
         isAbsolute = false;
 
-        var pathSpan = relativePath.AsSpan();
+        var pathSpan = filePath.AsSpan();
 
         var subfolderRangeArray = _rangeArrayPool.Get();
         var wholeSubfolderSpan = subfolderRangeArray.AsSpan();
@@ -150,7 +149,7 @@ public static partial class ResourceManager
             var folder = package.ResourcesFolder;
             if (newPath.StartsWith(folder))
             {
-                relativePath = '/' + $"{package.Alias}/{newPath[folder.Length..]}";
+                relativePath = '/' + $"{package.Name}/{newPath[folder.Length..]}";
                 relativePath.ToForwardSlashesUnsafe();
                 return true;
             }

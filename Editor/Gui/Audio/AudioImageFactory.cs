@@ -32,7 +32,7 @@ internal static class AudioImageFactory
         }
         
         // Generate image, if file exists.
-        if (!ResourceManager.TryResolveRelativePath(handle.Clip.FilePath, handle.Owner, out _, out _))
+        if (!ResourceManager.TryResolveUri(handle.Clip.FilePath, handle.Owner, out _, out _))
         {
             return false;
         }

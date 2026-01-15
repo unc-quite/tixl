@@ -107,7 +107,7 @@ public static class SharedResources
     private sealed class SharedResourceObject : IResourcePackage
     {
         public string DisplayName => "Shared Resources";
-        public string Alias => "t3";
+        public string Name => "t3";
         // ReSharper disable once ReplaceAutoPropertyWithComputedProperty
         public string ResourcesFolder { get; } = Directory;
         public string RootNamespace => null;
