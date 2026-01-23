@@ -228,17 +228,17 @@ internal sealed partial class AssetLibrary
         ImGui.PushID(RuntimeHelpers.GetHashCode(asset));
         {
             var fade = !fileConsumerOpSelected
-                           ? 0.8f
+                           ? 0.7f
                            : fileConsumerOpIsCompatible
                                ? 1f
                                : 0.2f;
 
-            var iconColor = ColorVariations.OperatorLabel.Apply(asset.AssetType?.Color ?? UiColors.Text);
+            var iconColor = ColorVariations.OperatorLabel.Apply(asset.AssetType != null ? asset.AssetType.Color : UiColors.Text);
             var icon = asset.AssetType != null
                          ? (Icon)asset.AssetType.IconId 
                          : Icon.FileImage;
             
-            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 5);
+            ImGui.SetCursorPosX(ImGui.GetCursorPosX() -6);
             if (ButtonWithIcon(string.Empty,
                                asset.FileSystemInfo?.Name ?? string.Empty,
                                icon,

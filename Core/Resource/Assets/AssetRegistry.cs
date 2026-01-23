@@ -159,7 +159,7 @@ public static class AssetRegistry
         Log.Debug($"{packageAlias}: Registered {_assetsByAddress.Count(a => a.Value.PackageId == packageId)} assets (including directories).");
     }
 
-    private static void RegisterEntry(FileSystemInfo info, string root, string packageAlias, Guid packageId, bool isDirectory)
+    public static void RegisterEntry(FileSystemInfo info, string root, string packageAlias, Guid packageId, bool isDirectory)
     {
         // If the info is the root itself, relative path is empty string
         var relativePath = Path.GetRelativePath(root, info.FullName).Replace("\\", "/");
@@ -216,9 +216,12 @@ public static class AssetRegistry
     /// </summary>
     public static bool TryConstructAddressFromFilePath(string absolutePath,
                                                        Instance composition,
-                                                       [NotNullWhen(true)] out string assetUri)
+                                                       [NotNullWhen(true)] out string? assetUri,
+                                                       [NotNullWhen(true)] out IResourcePackage? package
+        )
     {
         assetUri = null;
+        package = null;
         if (string.IsNullOrWhiteSpace(absolutePath)) return false;
 
         var normalizedPath = absolutePath.Replace("\\", "/");
@@ -226,13 +229,14 @@ public static class AssetRegistry
         var localPackage = composition.Symbol.SymbolPackage;
 
         // Disable localUris for now
-        //var localRoot = localPackage.ResourcesFolder.TrimEnd('/') + "/";
-        // if (normalizedPath.StartsWith(localRoot, StringComparison.OrdinalIgnoreCase))
-        // {
-        //     // Dropping the root folder gives us the local relative path
-        //     assetUri = normalizedPath[localRoot.Length..];
-        //     return true;
-        // }
+        var localRoot = localPackage.ResourcesFolder.TrimEnd('/') + "/";
+         if (normalizedPath.StartsWith(localRoot, StringComparison.OrdinalIgnoreCase))
+         {
+             // Dropping the root folder gives us the local relative path
+             assetUri = localPackage.Name + ":" + normalizedPath[localRoot.Length..];
+             package = localPackage;
+             return true;
+         }
 
         // 3. Check other packages
         foreach (var p in composition.AvailableResourcePackages)
@@ -242,15 +246,15 @@ public static class AssetRegistry
             var packageRoot = p.ResourcesFolder.TrimEnd('/') + "/";
             if (normalizedPath.StartsWith(packageRoot, StringComparison.OrdinalIgnoreCase))
             {
-                // Tixl 4.0 format...
-                assetUri = $"/{p.Name}/{normalizedPath[packageRoot.Length..]}";
+                assetUri = $"{p.Name}:{normalizedPath[packageRoot.Length..]}";
+                package = p;
                 return true;
             }
         }
 
         // 4. Fallback to Absolute
         assetUri = normalizedPath;
-        return true;
+        return false;
     }
 
     public const char PathSeparator = '/';

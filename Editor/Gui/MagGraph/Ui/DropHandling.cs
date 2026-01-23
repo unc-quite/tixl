@@ -4,7 +4,6 @@ using System.IO;
 using ImGuiNET;
 using T3.Core.Operator;
 using T3.Core.Operator.Slots;
-using T3.Core.Resource;
 using T3.Core.Resource.Assets;
 using T3.Editor.Gui.MagGraph.Model;
 using T3.Editor.Gui.MagGraph.States;
@@ -149,30 +148,6 @@ internal static class DropHandling
                 else
                 {
                     Log.Debug("Already project asset: " + filepath);
-
-                    // var composition = context.CompositionInstance;
-                    // if (!ResourceManager.TryConstructAssetAddress(filepath, composition, out var address))
-                    // {
-                    //     Log.Warning($"Can't address for {filepath}");
-                    //     return false;
-                    // }
-                    //
-                    // //ResourceManager.TryResolveRelativePath(destFilepath, ProjectView.Focused!.CompositionInstance, out var absolutePath, out _);
-                    //
-                    // if (!AssetLibrary.GetAssetFromAliasPath(address, out var asset))
-                    // {
-                    //     Log.Warning($"Can't get asset for {address}");
-                    //     return false;
-                    // }
-                    //
-                    // if (asset.AssetType == null)
-                    // {
-                    //     Log.Warning($"{filepath} has no asset type");
-                    //     return true;
-                    // }
-                    //
-                    // Log.Debug("! Would create op " + asset);
-                    // return true;
                 }
 
                 if (!AssetType.TryGetForFilePath(destFilepath, out var assetType, out _))
@@ -181,14 +156,33 @@ internal static class DropHandling
                     continue;
                 }
 
-                if (!AssetRegistry.TryConstructAddressFromFilePath(destFilepath, context.CompositionInstance, out var uri))
+                if (!AssetRegistry.TryConstructAddressFromFilePath(destFilepath, context.CompositionInstance, out var address, out var package))
                 {
                     Log.Warning($"Can't construct uri for {destFilepath}");
                     continue;
                 }
 
-                if (!CreateAssetOperator(context, assetType, uri, dropOffset))
+                FileInfo? fileInfo;
+                try
+                {
+                    fileInfo = new FileInfo(destFilepath);
+                }
+                catch (Exception e)
+                {
+                    Log.Warning($"Failed to get fileinfo after dropping to {destFilepath} " + e.Message);
                     continue;
+                }
+
+                if (string.IsNullOrEmpty(package.Name))
+                {
+                    Log.Warning("Can't drop into unnamed package?");
+                    continue;
+                }
+
+                if (!CreateAssetOperator(context, assetType, address, dropOffset))
+                    continue;
+
+                AssetRegistry.RegisterEntry(fileInfo, package.ResourcesFolder, package.Name ?? string.Empty, package.Id, false);
 
                 dropOffset += new Vector2(20, 100);
             }
@@ -219,11 +213,13 @@ internal static class DropHandling
         dl.AddRectFilled(pos, pos + MagGraphItem.GridSize, color, 4);
     }
 
-    private static bool CreateAssetOperator(GraphUiContext context, AssetType assetType, string aliasPath, Vector2 dropOffset)
+    private static bool CreateAssetOperator(GraphUiContext context,
+                                            AssetType assetType,
+                                            string address, Vector2 dropOffset)
     {
         if (assetType.PrimaryOperators.Count == 0)
         {
-            Log.Warning($"{aliasPath} of type {assetType} has no matching operator symbols");
+            Log.Warning($"{address} of type {assetType} has no matching operator symbols");
             return false;
         }
 
@@ -239,9 +235,9 @@ internal static class DropHandling
             return false;
         }
 
-        Log.Debug($"Created {newInstance} with {aliasPath}", newInstance);
+        Log.Debug($"Created {newInstance} with {address}", newInstance);
 
-        stringInput.TypedInputValue.Assign(new InputValue<string>(aliasPath));
+        stringInput.TypedInputValue.Assign(new InputValue<string>(address));
         stringInput.DirtyFlag.ForceInvalidate();
         stringInput.Parent.Parent?.Symbol.InvalidateInputInAllChildInstances(stringInput);
         stringInput.Input.IsDefault = false;

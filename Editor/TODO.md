@@ -47,8 +47,10 @@
 - [x] Move AssetTypes to Core
 - [ ] Use AssetTypes and AssetRegistry to draw FilePicking with filters
 - [x] Extend Asset with isDirectory
-- [ ] Return temp Assets?
-- [ ] Update conform
+- [x] Return temp Assets?
+- [x] Update conform
+- [ ] Check file hook on rename
+- [ ] Check file hook on delete
 - [x] Add FolderPaths Assets
 - [x] In AssetLib (only use AssetRegistry)
 - [.] Test Recompile / Symbol Reload
