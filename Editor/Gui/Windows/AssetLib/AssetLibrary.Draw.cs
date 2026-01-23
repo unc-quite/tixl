@@ -75,6 +75,14 @@ internal sealed partial class AssetLibrary
         }
         else
         {
+            var hasMatches = folder.MatchingAssetCount > 0;
+            var isFiltering = _state.CompatibleExtensionIds.Count > 0;            
+            if (isFiltering && !hasMatches)
+            {
+                ImGui.PushStyleColor(ImGuiCol.Text, UiColors.TextMuted.Rgba);
+            }
+            
+            
             ImGui.SetNextItemWidth(10);
             if (folder.Name == "Lib" && !_state.OpenedLibFolderOnce)
             {
@@ -84,12 +92,30 @@ internal sealed partial class AssetLibrary
 
             _state.TreeHandler.UpdateForNode(folder.HashCode);
 
-            if (_expandToFileTriggered && ContainsTargetFile(folder))
+            var containsTargetFile = ContainsTargetFile(folder);
+            if (_expandToFileTriggered && containsTargetFile)
             {
                 ImGui.SetNextItemOpen(true);
             }
 
             var isOpen = ImGui.TreeNodeEx(folder.Name);
+            
+            // Show filter count
+            if (!isOpen && isFiltering && hasMatches)
+            {
+                var countLabel = $"{folder.MatchingAssetCount}";
+                var labelSize = ImGui.CalcTextSize(countLabel);
+                CustomComponents.RightAlign(labelSize.X + 4 + (containsTargetFile ? Icons.FontSize : 0));
+                ImGui.PushStyleColor(ImGuiCol.Text, UiColors.ForegroundFull.Fade(0.3f).Rgba);
+                ImGui.TextUnformatted(countLabel);
+                ImGui.PopStyleColor();
+            }
+            
+            if (isFiltering && !hasMatches)
+            {
+                ImGui.PopStyleColor();
+            }            
+            
             _state.TreeHandler.NoFolderOpen = false;
 
             _folderForMenu = folder;
@@ -108,6 +134,8 @@ internal sealed partial class AssetLibrary
                                                     }
                                                 });
 
+
+            
             if (isOpen)
             {
                 DrawFolderContent(folder);
@@ -155,6 +183,8 @@ internal sealed partial class AssetLibrary
                     ImGui.PopID();
                 }
             }
+            
+
         }
     }
 

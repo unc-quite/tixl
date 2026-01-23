@@ -19,6 +19,8 @@ internal sealed class AssetFolder
     internal string Name { get; private set; }
     internal List<AssetFolder> SubFolders { get; } = [];
     private AssetFolder? Parent { get; }
+    internal int MatchingAssetCount;
+    
     public int HashCode;
 
     /// <summary>
@@ -58,8 +60,7 @@ internal sealed class AssetFolder
         
         HashCode = Address.GetHashCode();
     }
-
-    // Define an action delegate that takes a Symbol and returns a bool
+    
     internal static void PopulateCompleteTree(AssetLibState state, Predicate<Asset>? filterAction)
     {
         if (state.Composition == null)
@@ -76,8 +77,39 @@ internal sealed class AssetFolder
 
             state.RootFolder.SortInAssets(file, state.Composition);
         }
+        
+        state.RootFolder.UpdateMatchingAssetCounts(state.CompatibleExtensionIds);
     }
 
+    
+    private int UpdateMatchingAssetCounts(List<int> compatibleExtensionIds)
+    {
+        var count = 0;
+
+        // Count direct assets in this folder
+        if (compatibleExtensionIds.Count == 0)
+        {
+            count += FolderAssets.Count;
+        }
+        else
+        {
+            foreach (var asset in FolderAssets)
+            {
+                if (compatibleExtensionIds.Contains(asset.ExtensionId))
+                    count++;
+            }
+        }
+
+        // Aggregate counts from subfolders
+        foreach (var subFolder in SubFolders)
+        {
+            count += subFolder.UpdateMatchingAssetCounts(compatibleExtensionIds);
+        }
+
+        MatchingAssetCount = count;
+        return count;
+    }
+    
     /// <summary>
     /// Build up folder structure by sorting in one asset at a time
     /// creating required sub folders on the way.
