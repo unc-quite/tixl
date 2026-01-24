@@ -177,7 +177,7 @@ internal static partial class ResourceInputWithTypeAheadSearch
                     // We can't use IsItemHovered because we need to use Tooltip hack 
                     ImGui.PushStyleColor(ImGuiCol.Text, UiColors.Text.Rgba);
 
-                    TryGetProjectPathAndFilenameFromUri(path, out var project, out var pathInProject, out var filename);
+                    TryGetProjectPathAndFilenameFromAddress(path, out var project, out var pathInProject, out var filename);
 
                     if (!project.Equals(lastProjectGroup, StringComparison.Ordinal))
                     {
@@ -258,7 +258,7 @@ internal static partial class ResourceInputWithTypeAheadSearch
         return wasSelected;
     }
 
-    private static bool TryGetProjectPathAndFilenameFromUri(ReadOnlySpan<char> uri, 
+    private static bool TryGetProjectPathAndFilenameFromAddress(ReadOnlySpan<char> address, 
                                                             out ReadOnlySpan<char> project,
                                                             out ReadOnlySpan<char> path,
                                                             out ReadOnlySpan<char> filename
@@ -266,12 +266,12 @@ internal static partial class ResourceInputWithTypeAheadSearch
     {
         filename =path=project = ReadOnlySpan<char>.Empty;
 
-        var colon = uri.IndexOf(':');
-        if (colon <= 1 || colon >= uri.Length -1)
+        var colon = address.IndexOf(':');
+        if (colon <= 1 || colon >= address.Length -1)
             return false;
 
-        project = uri[..colon];
-        var rest = uri[(colon + 1)..];
+        project = address[..colon];
+        var rest = address[(colon + 1)..];
 
         var lastSlash = rest.LastIndexOf('/');
 

@@ -53,7 +53,7 @@ internal sealed class AssetFolder
         }
 
         Address = GetAliasPath();
-        if (!AssetRegistry.TryResolveUri(Address, selectedInstance, out AbsolutePath, out _, isFolder: true))
+        if (!AssetRegistry.TryResolveAddress(Address, selectedInstance, out AbsolutePath, out _, isFolder: true))
         {
             Log.Warning($"Can't resolve folder path '{Address}'? ");
         }

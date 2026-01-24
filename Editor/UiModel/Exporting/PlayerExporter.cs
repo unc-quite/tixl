@@ -433,7 +433,7 @@ internal static partial class PlayerExporter
                 var relativeDirectory = stringValue.Value;
                 var isFolder = relativeDirectory.EndsWith('/');
 
-                if (!AssetRegistry.TryResolveUri(relativeDirectory, parent, out var absoluteDirectory, out var package, isFolder))
+                if (!AssetRegistry.TryResolveAddress(relativeDirectory, parent, out var absoluteDirectory, out var package, isFolder))
                 {
                     Log.Warning($"Directory '{relativeDirectory}' was not found in any resource folder");
                     break;

@@ -144,7 +144,7 @@ public sealed partial class DX11ShaderCompiler : ShaderCompiler
         public Stream Open(IncludeType type, string fileName, Stream parentStream)
         {
             var fileNameInLib = "Lib:shaders/" + fileName; 
-            if (AssetRegistry.TryResolveUri(fileNameInLib, _owner, out var path, out _))
+            if (AssetRegistry.TryResolveAddress(fileNameInLib, _owner, out var path, out _))
             {
                 _streamReader = new StreamReader(path);
                 return _streamReader.BaseStream;

@@ -66,7 +66,7 @@ internal static partial class PlayerExporter
             var searchDirs = otherDirs ?? resources;
             
             var tempResourceConsumer = new TempResourceConsumer(searchDirs);
-            if (!AssetRegistry.TryResolveUri(resourcePath, tempResourceConsumer, out var absolutePath, out var package))
+            if (!AssetRegistry.TryResolveAddress(resourcePath, tempResourceConsumer, out var absolutePath, out var package))
             {
                 Log.Error($"Can't find file: {resourcePath}");
                 return false;

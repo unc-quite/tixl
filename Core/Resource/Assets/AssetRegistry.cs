@@ -20,7 +20,7 @@ public static class AssetRegistry
         return _assetsByAddress.TryGetValue(address, out asset);
     }
 
-    public static bool TryResolveUri(string uri,
+    public static bool TryResolveAddress(string address,
                                      IResourceConsumer? consumer,
                                      out string absolutePath,
                                      [NotNullWhen(true)] out IResourcePackage? resourceContainer,
@@ -29,11 +29,11 @@ public static class AssetRegistry
         resourceContainer = null;
         absolutePath = string.Empty;
 
-        if (string.IsNullOrWhiteSpace(uri))
+        if (string.IsNullOrWhiteSpace(address))
             return false;
 
         // 1. High-performance registry lookup
-        if (TryGetAsset(uri, out var asset))
+        if (TryGetAsset(address, out var asset))
         {
             if (asset.FileSystemInfo != null && asset.IsDirectory == isFolder)
             {
@@ -51,44 +51,44 @@ public static class AssetRegistry
             }
         }
 
-        uri.ToForwardSlashesUnsafe();
-        var uriSpan = uri.AsSpan();
+        address.ToForwardSlashesUnsafe();
+        var span = address.AsSpan();
 
         // 2. Fallback for internal editor resources
-        if (uriSpan.StartsWith("./"))
+        if (span.StartsWith("./"))
         {
-            absolutePath = Path.GetFullPath(uri);
+            absolutePath = Path.GetFullPath(address);
             if (consumer is Instance instance)
-                Log.Warning($"Can't resolve relative asset '{uri}'", instance);
+                Log.Warning($"Can't resolve relative asset '{address}'", instance);
             else
-                Log.Warning($"Can't relative resolve asset '{uri}'");
+                Log.Warning($"Can't relative resolve asset '{address}'");
 
             return false;
         }
 
-        var projectSeparator = uri.IndexOf(PackageSeparator);
+        var projectSeparator = address.IndexOf(PackageSeparator);
 
         // 3. Legacy windows absolute paths (e.g. C:/...)
         if (projectSeparator == 1)
         {
-            absolutePath = uri;
+            absolutePath = address;
             return Exists(absolutePath, isFolder);
         }
 
         if (projectSeparator == -1)
         {
-            Log.Warning($"Can't resolve asset '{uri}'");
+            Log.Warning($"Can't resolve asset '{address}'");
             return false;
         }
 
         // 4. Fallback search through packages
-        var packageName = uriSpan[..projectSeparator];
-        var localPath = uriSpan[(projectSeparator + 1)..];
+        var packageName = span[..projectSeparator];
+        var localPath = span[(projectSeparator + 1)..];
 
         var packages = consumer?.AvailableResourcePackages ?? ResourceManager.ShaderPackages;
         if (packages.Count == 0)
         {
-            Log.Warning($"Can't resolve asset '{uri}' (no packages found)");
+            Log.Warning($"Can't resolve asset '{address}' (no packages found)");
             return false;
         }
 
@@ -203,15 +203,15 @@ public static class AssetRegistry
 
     internal static void UnregisterPackage(Guid packageId)
     {
-        var urisToRemove = _assetsByAddress.Values
+        var addressesToRemove = _assetsByAddress.Values
                                            .Where(a => a.PackageId == packageId)
                                            .Select(a => a.Address)
                                            .ToList();
 
-        foreach (var uri in urisToRemove)
+        foreach (var addr in addressesToRemove)
         {
-            _assetsByAddress.TryRemove(uri, out _);
-            _usagesByAddress.TryRemove(uri, out _);
+            _assetsByAddress.TryRemove(addr, out _);
+            //_usagesByAddress.TryRemove(addr, out _);
         }
     }
 
@@ -223,11 +223,11 @@ public static class AssetRegistry
     /// </summary>
     public static bool TryConstructAddressFromFilePath(string absolutePath,
                                                        Instance composition,
-                                                       [NotNullWhen(true)] out string? assetUri,
+                                                       [NotNullWhen(true)] out string? address,
                                                        [NotNullWhen(true)] out IResourcePackage? package
         )
     {
-        assetUri = null;
+        address = null;
         package = null;
         if (string.IsNullOrWhiteSpace(absolutePath)) return false;
 
@@ -240,7 +240,7 @@ public static class AssetRegistry
          if (normalizedPath.StartsWith(localRoot, StringComparison.OrdinalIgnoreCase))
          {
              // Dropping the root folder gives us the local relative path
-             assetUri = localPackage.Name + ":" + normalizedPath[localRoot.Length..];
+             address = localPackage.Name + ":" + normalizedPath[localRoot.Length..];
              package = localPackage;
              return true;
          }
@@ -253,40 +253,42 @@ public static class AssetRegistry
             var packageRoot = p.ResourcesFolder.TrimEnd('/') + "/";
             if (normalizedPath.StartsWith(packageRoot, StringComparison.OrdinalIgnoreCase))
             {
-                assetUri = $"{p.Name}:{normalizedPath[packageRoot.Length..]}";
+                address = $"{p.Name}:{normalizedPath[packageRoot.Length..]}";
                 package = p;
                 return true;
             }
         }
 
         // 4. Fallback to Absolute
-        assetUri = normalizedPath;
+        address = normalizedPath;
         return false;
     }
     
     public static void UpdateEntry(string oldPath, string newPath, SymbolPackage package)
     {
         var isDir = Directory.Exists(newPath);
-    
-        if (isDir)
-        {
-            // Recursive update for all assets under this folder
-            if (TryConvertToRelativePath(oldPath, out var oldFolderAddress))
-            {
-                var prefix = oldFolderAddress + "/";
-                var affectedAssets = _assetsByAddress.Keys
-                                                     .Where(k => k.StartsWith(prefix))
-                                                     .ToList();
-
-                foreach (var oldAddress2 in affectedAssets)
-                {
-                    if (_assetsByAddress.TryRemove(oldAddress2, out var asset))
-                    {
-                        //TODO: Add Logic to rebuild the new address and re-insert
-                    }
-                }
-            }
-        }        
+        
+        //TODO: Add Logic to rebuild the new address and re-insert
+        
+        // if (isDir)
+        // {
+        //     Recursive update for all assets under this folder
+        //     if (TryConvertToRelativePath(oldPath, out var oldFolderAddress))
+        //     {
+        //         var prefix = oldFolderAddress + "/";
+        //         var affectedAssets = _assetsByAddress.Keys
+        //                                              .Where(k => k.StartsWith(prefix))
+        //                                              .ToList();
+        //         
+        //         foreach (var oldAddress2 in affectedAssets)
+        //         {
+        //             if (_assetsByAddress.TryRemove(oldAddress2, out var asset))
+        //             {
+        //                 
+        //             }
+        //         }
+        //     }
+        // }        
         
         // 1. Remove old address
         if (TryConvertToRelativePath(oldPath, out var oldAddress))
@@ -330,6 +332,6 @@ public static class AssetRegistry
     public static ICollection<Asset> AllAssets => _assetsByAddress.Values;
 
     private static readonly ConcurrentDictionary<string, Asset> _assetsByAddress = new(StringComparer.OrdinalIgnoreCase);
-    private static readonly ConcurrentDictionary<string, List<AssetReference>> _usagesByAddress = new();
+    //private static readonly ConcurrentDictionary<string, List<AssetReference>> _usagesByAddress = new();
     private static readonly ConcurrentDictionary<string, string> _healerIndex = new(StringComparer.OrdinalIgnoreCase);
 }

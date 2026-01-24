@@ -222,7 +222,7 @@ public sealed class TextureBgraReadAccess : IDisposable
             return;
 
         const string sourceAddress = FileLocations.LibPackageName + ":shaders/img/ConvertFormat-cs.hlsl";
-        AssetRegistry.TryResolveUri(sourceAddress, null,out var sourcePath, out _);
+        AssetRegistry.TryResolveAddress(sourceAddress, null,out var sourcePath, out _);
         const string entryPoint = "main";
         //const string debugName = "resolve-convert-texture-format";
 

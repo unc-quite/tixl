@@ -23,7 +23,7 @@ internal static class AudioImageGenerator
             return false;
         }
             
-        if (!AssetRegistry.TryResolveUri(relativePath, instance, out var soundFilePathAbsolute, out _))
+        if (!AssetRegistry.TryResolveAddress(relativePath, instance, out var soundFilePathAbsolute, out _))
         {
             Log.Error($"Could not get absolute path for audio clip: {relativePath}");
             imagePathAbsolute = null;

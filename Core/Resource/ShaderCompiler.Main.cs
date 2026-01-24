@@ -26,7 +26,7 @@ public abstract partial class ShaderCompiler
         {
             //TODO: This is an ugly work around to get it running.
             var includeInLib = "Lib:shaders/" + include;
-            if (!AssetRegistry.TryResolveUri(includeInLib, includeDirectories, out _, out _))
+            if (!AssetRegistry.TryResolveAddress(includeInLib, includeDirectories, out _, out _))
             {
                 reason = $"Can't find include file: {includeInLib}";
                 shader = null;

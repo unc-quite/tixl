@@ -492,7 +492,7 @@ internal static class NodeActions
         {
             var relative = op.Path.GetCurrentValue();
             var instance = op.Instance;
-            return AssetRegistry.TryResolveUri(relative, instance, out filePath, out package);
+            return AssetRegistry.TryResolveAddress(relative, instance, out filePath, out package);
         }
     }
 

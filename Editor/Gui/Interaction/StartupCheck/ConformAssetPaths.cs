@@ -192,7 +192,7 @@ internal static class ConformAssetPaths
                     stringValue.Value = convertedFolderPath;
                 }
 
-                if (!AssetRegistry.TryResolveUri(stringValue.Value, null, out var absolutePath, out _, isFolder: true))
+                if (!AssetRegistry.TryResolveAddress(stringValue.Value, null, out var absolutePath, out _, isFolder: true))
                 {
                     if (symbolChild == null)
                     {
