@@ -809,7 +809,7 @@
         {
           "Id": "24b7e7e1-fe0b-46be-807e-0afacd4800f9"/*FilePath*/,
           "Type": "System.String",
-          "Value": "Examples:Examples:Resources/user/still/proj-works-for-everybody/shader/StripePattern.hlsl"
+          "Value": "Examples:Resources/user/still/proj-works-for-everybody/shader/StripePattern.hlsl"
         },
         {
           "Id": "5c6241f7-6a4f-4972-a314-98fd070f91dd"/*TriggerUpdate*/,

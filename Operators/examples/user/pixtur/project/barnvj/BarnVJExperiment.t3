@@ -1405,7 +1405,7 @@
         {
           "Id": "76cc3811-4ae0-48b2-a119-890db5a4eeb2"/*Path*/,
           "Type": "System.String",
-          "Value": "Examples:Examples:Resources/Example/user/pixtur/projects/proj-vj-barn/tex/signal-2023-07-12-200811_002.jpeg"
+          "Value": "Examples:Resources/Example/user/pixtur/projects/proj-vj-barn/tex/signal-2023-07-12-200811_002.jpeg"
         }
       ],
       "Outputs": []
@@ -1990,7 +1990,7 @@
         {
           "Id": "76cc3811-4ae0-48b2-a119-890db5a4eeb2"/*Path*/,
           "Type": "System.String",
-          "Value": "Examples:Examples:Resources/Example/user/pixtur/projects/proj-vj-barn/geometry/_barnWall01.jpg"
+          "Value": "Examples:Resources/Example/user/pixtur/projects/proj-vj-barn/geometry/_barnWall01.jpg"
         }
       ],
       "Outputs": []
@@ -2336,7 +2336,7 @@
         {
           "Id": "7d576017-89bd-4813-bc9b-70214efe6a27"/*Path*/,
           "Type": "System.String",
-          "Value": "Examples:Examples:Resources/Example/user/pixtur/projects/proj-vj-barn/geometry/somerhaus-v01.obj"
+          "Value": "Examples:Resources/Example/user/pixtur/projects/proj-vj-barn/geometry/somerhaus-v01.obj"
         }
       ],
       "Outputs": []
@@ -4390,7 +4390,7 @@
         {
           "Id": "b6932cbd-e6b6-447b-b416-701326227864"/*Path*/,
           "Type": "System.String",
-          "Value": "Examples:Examples:Resources/Example/user/pixtur/projects/proj-vj-barn/geometry/somerhaus-v01.obj"
+          "Value": "Examples:Resources/Example/user/pixtur/projects/proj-vj-barn/geometry/somerhaus-v01.obj"
         }
       ],
       "Outputs": []

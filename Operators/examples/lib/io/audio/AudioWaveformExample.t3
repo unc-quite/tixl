@@ -283,7 +283,7 @@
         {
           "Id": "76cc3811-4ae0-48b2-a119-890db5a4eeb2"/*Path*/,
           "Type": "System.String",
-          "Value": "Examples:Examples:t3/images/editor/t3-icons.png"
+          "Value": "Examples:t3/images/editor/t3-icons.png"
         }
       ],
       "Outputs": []
