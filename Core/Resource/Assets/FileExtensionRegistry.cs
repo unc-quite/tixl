@@ -119,14 +119,12 @@ public static class FileExtensionRegistry
     /// A helper method that generates a list of filter ids from an
     /// extension set string (e.g. "mp4, mov, m4v")
     /// </summary>
-    /// <param name="filter"></param>
-    /// <returns></returns>
-    public static HashSet<int> GetExtensionIdsFromExtensionSetString(string? filter)
+    public static List<int> GetExtensionIdsFromExtensionSetString(string? filter)
     {
-        var ids = new HashSet<int>();
-        if (string.IsNullOrWhiteSpace(filter)) return ids;
-
-        // Now just a simple comma-separated list
+        if (string.IsNullOrWhiteSpace(filter)) return [];
+        
+        var ids = new List<int>();
+        
         var extensions = filter.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
         foreach (var ext in extensions)
@@ -141,8 +139,7 @@ public static class FileExtensionRegistry
         return ids;
     }    
     
-    private static readonly Lock _registryLock = new(); // Use the new .NET 9 Lock type
-    
+    private static readonly Lock _registryLock = new(); 
     private static readonly Dictionary<string,int> _map = new(StringComparer.OrdinalIgnoreCase);
     private static int _next;
 }
