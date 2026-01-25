@@ -10,6 +10,7 @@ using Mediapipe.Framework.Formats;
 using T3.Core.Resource.Assets;
 using Image = Mediapipe.Framework.Formats.Image;
 // ReSharper disable InconsistentNaming
+// ReSharper disable EmptyGeneralCatchClause
 
 namespace Lib.io.video.mediapipe;
 
@@ -100,7 +101,7 @@ public class ImageSegmentation : Instance<ImageSegmentation>
 
         if (_inputQueue.Count < 1)
         {
-            var request = CreateRequestFromTexture(inputTexture, selectedCategories, categoryAllowlist);
+            var request = CreateRequestFromTexture(inputTexture, selectedCategories, categoryAllowlist!);
             if (request != null)
             {
                 _inputQueue.Enqueue(request);
@@ -943,7 +944,7 @@ public class ImageSegmentation : Instance<ImageSegmentation>
                 _imageSegmenter = null;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
 

@@ -25,6 +25,7 @@ using Mediapipe.Framework.Formats;
 using Landmark = Mediapipe.Landmark;
 using Image = Mediapipe.Framework.Formats.Image;
 using ImageFormat = Mediapipe.RegionFlowComputationOptions.Types.ImageFormat;
+// ReSharper disable EmptyGeneralCatchClause
 
 namespace Lib.io.video.mediapipe;
 
@@ -90,7 +91,7 @@ public class HandLandmarkDetection : Instance<HandLandmarkDetection>
 
         if (!enabled || inputTexture == null || inputTexture.IsDisposed)
         {
-            OutputTexture.Value = inputTexture;
+            OutputTexture.Value = inputTexture!;
             StopWorker(debug);
             ClearOutputs();
             return;
@@ -172,9 +173,9 @@ public class HandLandmarkDetection : Instance<HandLandmarkDetection>
             _currentResult = null;
         }
         
-        DebugTexture.Value = null;
-        WorldLandmarksBuffer.Value = null;
-        PointBuffer.Value = null;
+        DebugTexture.Value = null!;
+        WorldLandmarksBuffer.Value = null!;
+        PointBuffer.Value = null!;
     }
 
     #region MediaPipe Integration
@@ -564,8 +565,8 @@ public class HandLandmarkDetection : Instance<HandLandmarkDetection>
         if (result.Landmarks == null || result.Landmarks.Length == 0)
         {
             HandCount.Value = 0;
-            WorldLandmarksBuffer.Value = null;
-            PointBuffer.Value = null;
+            WorldLandmarksBuffer.Value = null!;
+            PointBuffer.Value = null!;
             return;
         }
 
@@ -573,7 +574,7 @@ public class HandLandmarkDetection : Instance<HandLandmarkDetection>
         _landmarksArray = result.Landmarks;
         
         float aspectRatio = 1.0f;
-        if (correctAspectRatio && inputTexture != null)
+        if (correctAspectRatio && inputTexture != null!)
         {
             aspectRatio = (float)inputTexture.Description.Width / inputTexture.Description.Height;
         }
@@ -606,7 +607,7 @@ public class HandLandmarkDetection : Instance<HandLandmarkDetection>
     {
         if (points == null || points.Length == 0)
         {
-            slot.Value = null;
+            slot.Value = null!;
             return;
         }
 
@@ -756,7 +757,7 @@ public class HandLandmarkDetection : Instance<HandLandmarkDetection>
 
             return landmarks.Count > 0 ? landmarks.ToArray() : null;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
@@ -764,13 +765,13 @@ public class HandLandmarkDetection : Instance<HandLandmarkDetection>
 
     private Point[]? ConvertHandLandmarkerResultToWorldLandmarks(HandLandmarkerResult result, int maxHands)
     {
-        if (result.HandWorldLandmarks == null) return null;
+        if (result.HandWorldLandmarks == null!) return null;
 
         int totalLandmarks = 0;
         for (int handIndex = 0; handIndex < result.HandWorldLandmarks.Count && handIndex < maxHands; handIndex++)
         {
             var handLandmarks = result.HandWorldLandmarks[handIndex];
-            if (handLandmarks.landmarks != null && handLandmarks.landmarks.Count > 0)
+            if (handLandmarks.landmarks != null! && handLandmarks.landmarks.Count > 0)
             {
                 totalLandmarks += Math.Min(handLandmarks.landmarks.Count, 21);
             }
@@ -808,7 +809,7 @@ public class HandLandmarkDetection : Instance<HandLandmarkDetection>
 
             return landmarks.Length > 0 ? landmarks.ToArray() : null;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ReturnPointArrayToPool(landmarks);
             return null;
@@ -828,7 +829,7 @@ public class HandLandmarkDetection : Instance<HandLandmarkDetection>
                 _handLandmarker = null;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
 

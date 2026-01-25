@@ -260,19 +260,19 @@ public sealed class FaceLandmarker : BaseVisionTaskApi
         return outputPackets =>
         {
             using Packet<Image>? outImagePacket = outputPackets.At<Image>(ImageOutStreamName);
-            if (outImagePacket == null || outImagePacket.IsEmpty()) return;
+            if (outImagePacket == null! || outImagePacket.IsEmpty()) return;
 
             using Image image = outImagePacket.Get();
             long timestamp = outImagePacket.TimestampMicroseconds() / MicroSecondsPerMillisecond;
 
             // Check if we have landmark data regardless of face detection results
             if (TryBuildFaceLandmarkerResult(outputPackets, faceGeometriesForRead, ref faceLandmarkerResult))
-                resultCallback(faceLandmarkerResult, image, timestamp);
+                resultCallback!(faceLandmarkerResult, image, timestamp);
             else
             {
                 // Even if no faces are detected, we should still call the callback with empty result
                 var emptyResult = new FaceLandmarkerResult([], null, null);
-                resultCallback(emptyResult, image, timestamp);
+                resultCallback!(emptyResult, image, timestamp);
             }
         };
     }

@@ -113,7 +113,7 @@ public class ObjectDetection : Instance<ObjectDetection>
 
         if (taskDead || detectorMissing || paramsChanged || modelChanged || allowlistChanged || denylistChanged)
         {
-            InitializeWorker(maxObjects, minDetectionConfidence, debug, model, categoryAllowlist, categoryDenylist);
+            InitializeWorker(maxObjects, minDetectionConfidence, debug, model, categoryAllowlist!, categoryDenylist!);
         }
 
         if (_objectDetector == null)
@@ -124,7 +124,7 @@ public class ObjectDetection : Instance<ObjectDetection>
 
         if (_inputQueue.Count < 1)
         {
-            var request = CreateRequestFromTexture(inputTexture, minDetectionConfidence, maxObjects, categoryAllowlist, categoryDenylist);
+            var request = CreateRequestFromTexture(inputTexture, minDetectionConfidence, maxObjects, categoryAllowlist!, categoryDenylist!);
             if (request != null)
             {
                 _inputQueue.Enqueue(request);
@@ -158,7 +158,7 @@ public class ObjectDetection : Instance<ObjectDetection>
             ObjectCount.Value = 0;
             DebugTexture.Value = null;
             PointBuffer.Value = null;
-            ObjectData.Value = null;
+            ObjectData.Value = null!;
             ActiveCategories.Value = new List<string>();
         }
     }
@@ -170,7 +170,7 @@ public class ObjectDetection : Instance<ObjectDetection>
         _currentResult = null;
         DebugTexture.Value = null;
         PointBuffer.Value = null;
-        ObjectData.Value = null;
+        ObjectData.Value = null!;
         ActiveCategories.Value = new List<string>();
     }
 
@@ -592,7 +592,7 @@ public class ObjectDetection : Instance<ObjectDetection>
         {
             ObjectCount.Value = 0;
             PointBuffer.Value = null;
-            ObjectData.Value = null;
+            ObjectData.Value = null!;
             ActiveCategories.Value = new List<string>();
             return;
         }
@@ -612,7 +612,7 @@ public class ObjectDetection : Instance<ObjectDetection>
         {
             var d = result.Detections[i];
 
-            float cx = d.BoundingBox.CenterX / imgW;
+            float cx = d.BoundingBox!.CenterX / imgW;
             float cy = d.BoundingBox.CenterY / imgH;
             float w = d.BoundingBox.Width / imgW;
             float h = d.BoundingBox.Height / imgH;
@@ -719,7 +719,7 @@ public class ObjectDetection : Instance<ObjectDetection>
         foreach (var detection in detections)
         {
             var bbox = detection.BoundingBox;
-            int x = (int)(bbox.CenterX - bbox.Width / 2);
+            int x = (int)(bbox!.CenterX - bbox.Width / 2);
             int y = (int)(bbox.CenterY - bbox.Height / 2);
             int w = (int)(bbox.Width);
             int h = (int)(bbox.Height);
@@ -831,7 +831,7 @@ public class ObjectDetection : Instance<ObjectDetection>
                 _objectDetector = null;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
 
@@ -955,7 +955,7 @@ public class Detection
 {
     public string? Label;
     public float Confidence;
-    public BoundingBox BoundingBox;
+    public BoundingBox? BoundingBox;
 }
 
 public class BoundingBox

@@ -79,7 +79,7 @@ namespace Lib.io.video.mediapipe
 
             if (!enabled || inputTexture == null || inputTexture.IsDisposed)
             {
-                OutputTexture.Value = inputTexture;
+                OutputTexture.Value = inputTexture!;
                 StopWorker(debug);
                 ClearOutputs();
                 return;
@@ -134,18 +134,18 @@ namespace Lib.io.video.mediapipe
             {
                 FaceCount.Value = 0;
                 FaceData.Value = new Dict<float>(0f);
-                PointBuffer.Value = null;
-                DebugTexture.Value = null;
+                PointBuffer.Value = null!;
+                DebugTexture.Value = null!;
             }
         }
 
         private void ClearOutputs()
         {
-            PointBuffer.Value = null;
+            PointBuffer.Value = null!;
             FaceData.Value = new Dict<float>(0f);
             FaceCount.Value = 0;
             _currentResult = null;
-            DebugTexture.Value = null;
+            DebugTexture.Value = null!;
         }
 
         #region MediaPipe Integration
@@ -702,7 +702,7 @@ namespace Lib.io.video.mediapipe
             {
                 FaceCount.Value = 0;
                 FaceData.Value = new Dict<float>(0f);
-                PointBuffer.Value = null;
+                PointBuffer.Value = null!;
                 return;
             }
 
@@ -715,7 +715,7 @@ namespace Lib.io.video.mediapipe
             }
             else
             {
-                PointBuffer.Value = null;
+                PointBuffer.Value = null!;
             }
         }
 
@@ -836,7 +836,7 @@ namespace Lib.io.video.mediapipe
 
         private void UpdateDetectionBuffer(Point[] points, bool showDetections, bool showKeypoints, float detectionSize, Vector4 detectionColor, Vector4 keypointColor, bool debug)
         {
-            if (points == null || points.Length == 0)
+            if (points == null! || points.Length == 0)
             {
                 return;
             }
@@ -849,7 +849,7 @@ namespace Lib.io.video.mediapipe
                 {
                     _detectionBuffer?.Dispose();
                     _detectionBuffer = null;
-                    PointBuffer.Value = null;
+                    PointBuffer.Value = null!;
                     return;
                 }
                 
@@ -898,14 +898,14 @@ namespace Lib.io.video.mediapipe
                         _detectionBuffer = null;
                     }
 
-                    PointBuffer.Value = _detectionBuffer;
+                    PointBuffer.Value = _detectionBuffer!;
                 }
                 catch (Exception ex)
                 {
                     if (debug) Log.Error($"[FaceDetection] BUFFER MANAGEMENT: Exception during buffer operations: {ex.Message}", this);
                     _detectionBuffer?.Dispose();
                     _detectionBuffer = null;
-                    PointBuffer.Value = null;
+                    PointBuffer.Value = null!;
                 }
             }
         }
@@ -924,7 +924,7 @@ namespace Lib.io.video.mediapipe
                         _faceDetector = null;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
                 
@@ -935,7 +935,7 @@ namespace Lib.io.video.mediapipe
                         _detectionBuffer?.Dispose();
                         _detectionBuffer = null;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                     }
                 }

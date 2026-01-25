@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using System.IO;
 using System.Runtime.CompilerServices;
 using ImGuiNET;
 using T3.Core.DataTypes.Vector;

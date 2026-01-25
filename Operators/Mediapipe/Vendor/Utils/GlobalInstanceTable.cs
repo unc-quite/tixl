@@ -76,7 +76,7 @@ public class GlobalInstanceTable<TKey, TValue> where TValue : class where TKey :
         _tableLock.EnterReadLock();
         try
         {
-            if (_table.ContainsKey(key)) return _table[key].TryGetTarget(out value);
+            if (_table.ContainsKey(key)) return _table[key].TryGetTarget(out value!);
             value = default!;
             return false;
         }

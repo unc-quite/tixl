@@ -10,6 +10,7 @@ using Mediapipe.Tasks.Vision.PoseLandmarker;
 using Mediapipe.Tasks.Vision.Core;
 using T3.Core.Resource.Assets;
 using Image = Mediapipe.Framework.Formats.Image;
+// ReSharper disable EmptyGeneralCatchClause
 
 namespace Lib.io.video.mediapipe;
 
@@ -591,8 +592,8 @@ public class PoseLandmarkDetection : Instance<PoseLandmarkDetection>
             processedLandmarks[i] = p;
         }
 
-        UpdateBuffer(result.WorldLandmarks, ref _worldLandmarksBufferWithViews, WorldLandmarksBuffer);
-        UpdateBuffer(processedLandmarks, ref _pointBufferWithViews, PointBuffer);
+        UpdateBuffer(result.WorldLandmarks, ref _worldLandmarksBufferWithViews, WorldLandmarksBuffer!);
+        UpdateBuffer(processedLandmarks, ref _pointBufferWithViews, PointBuffer!);
 
         if (result.SegmentationMask != null)
         {
@@ -607,7 +608,7 @@ public class PoseLandmarkDetection : Instance<PoseLandmarkDetection>
     {
         if (points == null || points.Length == 0)
         {
-            slot.Value = null;
+            slot.Value = null!;
             return;
         }
 
@@ -816,7 +817,7 @@ public class PoseLandmarkDetection : Instance<PoseLandmarkDetection>
 
             return landmarks;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ReturnPointArrayToPool(landmarks);
             return null;
@@ -825,13 +826,13 @@ public class PoseLandmarkDetection : Instance<PoseLandmarkDetection>
 
     private Point[]? ConvertPoseLandmarkerResultToWorldLandmarks(PoseLandmarkerResult result, int maxPoses)
     {
-        if (result.PoseWorldLandmarks == null) return null;
+        if (result.PoseWorldLandmarks == null!) return null;
 
         int totalLandmarks = 0;
         for (int poseIndex = 0; poseIndex < result.PoseWorldLandmarks.Count && poseIndex < maxPoses; poseIndex++)
         {
             var poseLandmarks = result.PoseWorldLandmarks[poseIndex];
-            if (poseLandmarks.landmarks != null && poseLandmarks.landmarks.Count > 0)
+            if (poseLandmarks.landmarks != null! && poseLandmarks.landmarks.Count > 0)
             {
                 totalLandmarks += Math.Min(poseLandmarks.landmarks.Count, 33);
             }
@@ -869,7 +870,7 @@ public class PoseLandmarkDetection : Instance<PoseLandmarkDetection>
 
             return landmarks;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ReturnPointArrayToPool(landmarks);
             return null;
@@ -885,7 +886,7 @@ public class PoseLandmarkDetection : Instance<PoseLandmarkDetection>
             // Placeholder: return null if we can't easily extract without unsafe code or specific MP methods
             return null; 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
@@ -893,7 +894,7 @@ public class PoseLandmarkDetection : Instance<PoseLandmarkDetection>
 
     private void UpdateSegmentationMaskTexture(byte[] maskData)
     {
-        if (maskData == null || maskData.Length == 0)
+        if (maskData == null! || maskData.Length == 0)
         {
             SegmentationMask.Value = null;
             return;
@@ -947,7 +948,7 @@ public class PoseLandmarkDetection : Instance<PoseLandmarkDetection>
                 _poseLandmarker = null;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
 

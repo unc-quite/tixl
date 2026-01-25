@@ -112,7 +112,7 @@ public class GestureRecognition : Instance<GestureRecognition>
 
         if (!enabled || inputTexture == null || inputTexture.IsDisposed)
         {
-            OutputTexture.Value = inputTexture;
+            OutputTexture.Value = inputTexture!;
             StopWorker(debug);
             ClearOutputs();
             return;
@@ -136,7 +136,7 @@ public class GestureRecognition : Instance<GestureRecognition>
 
         if (_inputQueue.Count < 1)
         {
-            var request = CreateRequestFromTexture(inputTexture, minHandDetectionConfidence, minHandPresenceConfidence, maxHands, categoryAllowlist, categoryDenylist);
+            var request = CreateRequestFromTexture(inputTexture, minHandDetectionConfidence, minHandPresenceConfidence, maxHands, categoryAllowlist!, categoryDenylist!);
             if (request != null)
             {
                 _inputQueue.Enqueue(request);
@@ -164,8 +164,8 @@ public class GestureRecognition : Instance<GestureRecognition>
             Confidence.Value = 0.0f;
             HandCount.Value = 0;
             Handedness.Value = new List<string>();
-            WorldLandmarksBuffer.Value = null;
-            PointBuffer.Value = null;
+            WorldLandmarksBuffer.Value = null!;
+            PointBuffer.Value = null!;
         }
 
         if (debug)
@@ -182,7 +182,7 @@ public class GestureRecognition : Instance<GestureRecognition>
         }
         else
         {
-            DebugTexture.Value = null;
+            DebugTexture.Value = null!;
         }
     }
 
@@ -201,10 +201,10 @@ public class GestureRecognition : Instance<GestureRecognition>
             _currentResult = null;
         }
         
-        DebugTexture.Value = null;
+        DebugTexture.Value = null!;
         Handedness.Value = new List<string>();
-        WorldLandmarksBuffer.Value = null;
-        PointBuffer.Value = null;
+        WorldLandmarksBuffer.Value = null!;
+        PointBuffer.Value = null!;
     }
 
     #region MediaPipe Integration
@@ -611,8 +611,8 @@ public class GestureRecognition : Instance<GestureRecognition>
             Confidence.Value = 0.0f;
             HandCount.Value = 0;
             Handedness.Value = new List<string>();
-            WorldLandmarksBuffer.Value = null;
-            PointBuffer.Value = null;
+            WorldLandmarksBuffer.Value = null!;
+            PointBuffer.Value = null!;
             return;
         }
 
@@ -626,7 +626,7 @@ public class GestureRecognition : Instance<GestureRecognition>
         Confidence.Value = gesture.Confidence;
 
         float aspectRatio = 1.0f;
-        if (correctAspectRatio && inputTexture != null)
+        if (correctAspectRatio && inputTexture != null!)
         {
             aspectRatio = (float)inputTexture.Description.Width / inputTexture.Description.Height;
         }
@@ -664,7 +664,7 @@ public class GestureRecognition : Instance<GestureRecognition>
     {
         if (points == null || points.Length == 0)
         {
-            slot.Value = null;
+            slot.Value = null!;
             return;
         }
 
@@ -861,14 +861,14 @@ public class GestureRecognition : Instance<GestureRecognition>
 
     private string[]? ConvertHandedness(HandLandmarkerResult result)
     {
-        if (result.Handedness == null) return null;
+        if (result.Handedness == null!) return null;
 
         var handednessList = new List<string>();
         foreach (var handedness in result.Handedness)
         {
-            if (handedness.Categories != null && handedness.Categories.Count > 0)
+            if (handedness.Categories != null! && handedness.Categories.Count > 0)
             {
-                handednessList.Add(handedness.Categories[0].CategoryName);
+                handednessList.Add(handedness.Categories[0].CategoryName!);
             }
         }
         return handednessList.ToArray();
@@ -1177,7 +1177,7 @@ public class GestureRecognition : Instance<GestureRecognition>
                 _handLandmarker = null;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
 

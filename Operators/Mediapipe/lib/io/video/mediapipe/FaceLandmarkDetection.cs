@@ -10,6 +10,8 @@ using Mediapipe.Tasks.Vision.Core;
 using Mediapipe.Tasks.Vision.FaceLandmarker;
 using T3.Core.Resource.Assets;
 using Image = Mediapipe.Framework.Formats.Image;
+// ReSharper disable EmptyGeneralCatchClause
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 
 #nullable enable
 
@@ -134,7 +136,7 @@ namespace Lib.io.video.mediapipe
                 
                 if (debug)
                 {
-                    using var mat = Texture2DToMat(inputTexture);
+                    using var mat = Texture2DToMat(inputTexture!);
                     if (!mat.Empty())
                     {
                         DrawDebugVisuals(mat, _currentResult);
@@ -839,7 +841,7 @@ namespace Lib.io.video.mediapipe
                         ResourceManager.Device.ImmediateContext.UpdateSubresource(landmarks, _landmarkBuffer.Buffer);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     _landmarkBuffer?.Dispose();
                     _landmarkBuffer = null;
@@ -894,7 +896,7 @@ namespace Lib.io.video.mediapipe
 
                     FillAITextures(landmarks, faceCount, textureWidth, textureHeight);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }
